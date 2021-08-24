@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Team Assignment 1</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/stylesheet.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- //<script type="text/javascript" src="js/searchUser.js"></script> -->
+    <script src="/script.js"></script>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <style>
+        body {
+            position: relative;
+        }
+
+        #menu {
+            background-color: black;
+            min-height: 900px;
+            color: white;
+            position: static;
+            height: 1000px;
+        }
+
+        #content {
+            margin-top: 60px;
+            margin-left: 50px;
+        }
+
+        #main-section {
+            background: url("../images/exam.jpg") no-repeat;
+            min-height: 672px;
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.9);
+            min-height: 672px;
+            position: relative;
+            width: 100%;
+        }
+
+        .main-frame {
+            margin-top: 130px;
+            padding: 30px;
+        }
+
+        .login {
+            margin-top: 130px;
+            background-color: rgba(0, 0, 0, 0.2);
+            width: 430px;
+            height: 470px;
+        }
+
+        .heading {
+            color: #337AB7;
+        }
+
+        .cursor {
+            cursor: pointer;
+        }
+
+        .btn-color {
+            background-color: black;
+            border-radius: 7px;
+            color: white;
+            padding: 15px;
+            margin-top: 25px;
+            font-size: 15px;
+            width: 136px;
+            margin-bottom: 50px;
+        }
+
+        .pos-edit {
+            float: right;
+            margin-top: -26px;
+            margin-right: 82px;
+        }
+
+        .pos-delete {
+            float: right;
+            margin-top: -26px;
+            margin-right: -127px;
+        }
+
+        .btn-save {
+            background-color: #337AB7;
+            color: white;
+        }
+
+        .btn-close {
+            background-color: red;
+            color: white;
+        }
+
+        .form-popup {
+            display: none;
+            position: fixed;
+            bottom: 50px;
+            right: 25px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+            padding: 83px;
+            background-color: white;
+            height: 80%;
+
+        }
+
+        .form-control {
+            width: 184px;
+        }
+
+        #form-btn {
+            margin-left: 175px;
+        }
+
+        .list-group-item {
+            margin-top: 50px;
+            height: 44px;
+        }
+
+        .table {
+            padding: 10px;
+            margin-left: 12px;
+        }
+
+        .mb-1 {
+            margin-top: 3px;
+        }
+
+        .list-heading {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #337AB7;
+            color: white;
+            word-wrap: break-word;
+
+        }
+
+        td,
+        th {
+            padding: 14px;
+        }
+
+        .spacing {
+            padding-left: 154px;
+
+        }
+
+        #space1 {
+            padding-left: 51px;
+            padding-right: 465px;
+        }
+
+        .space2 {
+            margin-left: -30px;
+        }
+
+        .table-space {
+            padding-left: 10px;
+        }
+
+        .btn-update {
+            margin-right: -50px;
+        }
+
+        .btn-search {
+            float: right;
+        }
+
+        .btn-color:hover {
+            background-color: #337AB7;
+        }
+
+        .btn-color {
+            padding: 1px;
+            width: 69px;
+            height: 33px;
+            margin-top: 53px;
+        }
+
+        input[type=search] {
+            margin-top: 3px;
+        }
+
+        .btn-margin {
+            margin-top: 0px;
+        }
+
+        .btn-add-margin {
+            margin-top: 50px;
+            padding: 12px;
+            width: 163px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="menu" class="col-md-2" color="black">
+                <br><br><br>
+                <ul class="nav nav-pills nav-stacked cursor">
+                    <li class="active"><a data-toggle="tab" data-target="#home">
+                            <i class="fa fa-home fa-fw" aria-hidden="true"></i>&emsp;Home</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#projects"><span class="glyphicon glyphicon-th-list"
+                                onclick="showprojects()"></span>&emsp;Projects</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#modules">
+                            <i class="fa fa-book fa-fw" aria-hidden="true"></i>&emsp;Modules</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#api">
+                            <span class="glyphicon glyphicon-cog"></span>&emsp;API</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#user">
+                            <i class=" fa fa-user" aria-hidden="true">
+                            </i>&emsp;User</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#userAddress">
+                            <i class="fa fa-address-card" aria-hidden="true"></i>&emsp;User Address
+                        </a></li><br>
+
+                </ul>
+            </div>
+            <div id="content" class="col-md-8">
+                <div class="tab-content">
+
+                    <div id="home" class="tab-pane in fade active">
+                        <h1>BITS -JS Project</h1>
+                        <h2>Group A</h2>
+                    </div>
+
+
+
+                    <div id="projects" class="tab-pane fade">
+
+                        <body onload="showprojects()">
+                            <h1 class="heading"><b>Projects</b></h1>
+                            <button type="button" class="btn-add-margin btn btn-primary"
+                                onclick="openForm(),showprojects()"><b>Add
+                                    Project</b>
+                            </button>
+                            <nav class="btn-search navbar navbar-light bg-light">
+                                <form class="form-inline">
+                                    <input class="form-control mr-sm-2" id="searchbar" type="search"
+                                        placeholder="Search" aria-label="Search">
+                                    <button class="btn-color btn btn-outline-success my-2 my-sm-0" onclick="search()"
+                                        type="submit">Search</button>
+                                </form>
+                            </nav>
+                            <br><br><br><br>
+
+                            <!-- <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                            <div class="list-title d-flex w-100 justify-content-between">
+                                <h4 class="mb-1">List</h4>
+
+                            </div>
+                        </a> -->
+
+                            <table class="list-heading">
+                                <tr>
+                                    <th>Title</th>
+                                    <th class="spacing">Description</th>
+                                    <th class="spacing" id="space1">Logo</th>
+                                </tr>
+                            </table>
+
+                            <table class="table" id="projectslist">
+                                <thead>
+
+                                    <tr>
+                                        <th class="search-list">Title</th>
+                                        <th class="search-list">Description</th>
+                                        <th class="search-list">logo</th>
+                                    </tr>
+                                </thead>
+
+                            </table>
+
+
+
+                            <form class="form-horizontal form-popup" id="myForm">
+                                <fieldset>
+
+                                    <!-- Form Name -->
+                                    <legend>New Project</legend>
+
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="textinput">Title</label>
+                                        <div class="col-md-4">
+                                            <input id="title" name="textinput" type="text"
+                                                placeholder="Enter the Title of the Project"
+                                                class="form-control input-md" required="">
+
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="textinput">Description</label>
+                                        <div class="col-md-4">
+                                            <input id="description" name="textinput" type="text"
+                                                placeholder="Enter the Description of the Project"
+                                                class="form-control input-md" required="">
+
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!-- File Button -->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="logo">Logo</label>
+                                        <div class="col-md-4">
+                                            <input id="logo" name="logo" class="input-file" type="file">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div id="form-btn">
+                                        <button type="submit" class="btn btn-save" onclick="saveData()">Save</button>
+                                        <button type="button" class="btn cancel btn-close"
+                                            onclick="closeForm()">Close</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+
+
+
+
+                            <form class="form-horizontal form-popup" id="myForm-update">
+                                <fieldset>
+
+                                    <!-- Form Name -->
+                                    <legend>Edit Project</legend>
+
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="textinput">Title</label>
+                                        <div class="col-md-4">
+                                            <input id="title_" name="textinput" type="text"
+                                                placeholder="Enter the Title of the Project"
+                                                class="form-control input-md" required="">
+                                            <input type="hidden" id="projectsindex">
+
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="textinput">Description</label>
+                                        <div class="col-md-4">
+                                            <input id="description_" name="textinput" type="text"
+                                                placeholder="Enter the Description of the Project"
+                                                class="form-control input-md" required="">
+
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div id="form-btn">
+                                        <button type="submit" class="btn btn-save"
+                                            onclick="Update(),showprojects(),saveData()">Update</button>
+                                        <button type="button" class="btn cancel btn-close"
+                                            onclick="closeFormupdate()">Close</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                    </div>
+
+
+
+
+
+                    <div id="modules" class="tab-pane fade">
+                        <h1 class="heading"><b>Modules</b></h1>
+                    </div>
+
+
+                    <div id="api" class="tab-pane fade">
+                        <h1 class="heading"><b>API</b></h1>
+                    </div>
+
+
+                    <div id="user" class="tab-pane fade">
+                        <h1 class="heading"><b>Users</b></h1>
+                    </div>
+
+                    <div id="userAddress" class="tab-pane fade">
+                        <h1 class="heading"><b>User Address</b></h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+
+        function openFormupdate() {
+            document.getElementById("myForm-update").style.display = "block";
+        }
+
+        function closeFormupdate() {
+            document.getElementById("myForm-update").style.display = "none";
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
