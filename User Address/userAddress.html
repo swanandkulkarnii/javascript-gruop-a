@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Team Assignment 1</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/stylesheet.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <script type="text/javascript" src="js/searchUser.js"></script> -->
+    <script src="userAddress.js"></script>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <style>
+        body {
+            position: relative;
+        }
+
+        #menu {
+            background-color: black;
+            min-height: 900px;
+            color: white;
+            position: static;
+            height: 1000px;
+        }
+
+        #content {
+            margin-top: 60px;
+            margin-left: 50px;
+        }
+
+        #main-section {
+            background: url("../images/exam.jpg") no-repeat;
+            min-height: 672px;
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.9);
+            min-height: 672px;
+            position: relative;
+            width: 100%;
+        }
+
+        .main-frame {
+            margin-top: 130px;
+            padding: 30px;
+        }
+
+        .login {
+            margin-top: 130px;
+            background-color: rgba(0, 0, 0, 0.2);
+            width: 430px;
+            height: 470px;
+        }
+
+        /* * {
+            border-radius: 0 !important;
+        } */
+        .heading {
+            color: #337AB7;
+        }
+
+        .cursor {
+            cursor: pointer;
+        }
+
+        .btn-color {
+            background-color: black;
+            border-radius: 7px;
+            color: white;
+            padding: 15px;
+            margin-top: 25px;
+            font-size: 15px;
+            width: 136px;
+            margin-bottom: 50px;
+        }
+
+        .pos-edit {
+            float: right;
+            margin-top: -26px;
+            margin-right: 82px;
+        }
+
+        .pos-delete {
+            float: right;
+            margin-top: -26px;
+            margin-right: -127px;
+        }
+
+        .btn-save {
+            background-color: green;
+            color: white;
+        }
+
+        .btn-close {
+            background-color: red;
+            color: white;
+        }
+
+        .form-popup {
+            display: none;
+            position: fixed;
+            bottom: 50px;
+            right: 25px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+            padding: 83px;
+            background-color: white;
+            height: 80%;
+
+        }
+
+        .form-control {
+            width: 184px;
+        }
+
+        #form-btn {
+            margin-left: 175px;
+        }
+
+        /* table,
+        th,
+        td,
+        tbody,
+        tr {
+            border: 1px solid black;
+        }
+
+        table {
+
+            border: 1px solid black;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="menu" class="col-md-2" color="black">
+                <!--<center><h3>Admin Panel</h3></center>-->
+                <br><br><br>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a data-toggle="tab" data-target="#home">
+                            <i class="fa fa-home fa-fw" aria-hidden="true"></i>&emsp;Home</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#projects"><span
+                                class="glyphicon glyphicon-th-list"></span>&emsp;Projects</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#modules">
+                            <i class="fa fa-book fa-fw" aria-hidden="true"></i>&emsp;Modules</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#api">
+                            <span class="glyphicon glyphicon-cog"></span>&emsp;API</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#user">
+                            <i class='fas fa-chalkboard-teacher'>
+                            </i>&emsp;User</a></li><br>
+
+                    <li><a data-toggle="tab" data-target="#userAddress" onclick="showuserAddress()">
+                            <i class="fa fa-city"></i></span>&emsp;User Address
+                        </a></li><br>
+
+                </ul>
+            </div>
+            <div id="content" class="col-md-8">
+                <div class="tab-content">
+
+
+
+                    <div id="home" class="tab-pane in fade active">
+                        <h3>Home</h3><br>
+
+                        <h4>Welcome to BITS</h4>
+
+                    </div>
+
+
+                    <div id="projects" class="tab-pane fade">
+                        <h3>Projects</h3>
+                    </div>
+
+
+                    <div id="modules" class="tab-pane fade">
+                        <h3>Modules</h3>
+                    </div>
+
+
+                    <div id="api" class="tab-pane fade">
+                        <h3>API</h3>
+                    </div>
+
+
+                    <div id="user" class="tab-pane fade">
+                        <h3>Users</h3>
+                    </div>
+
+
+                    <div id="userAddress" class="tab-pane fade">
+                        <!-- user address section starts -->
+                        <h3><b>User Address</b></h3>
+                        <button type="button" class="btn btn-primary"
+                            onclick="openFormAddress(),showuserAddress()"><b>Add
+                                User Address</b></button>
+                        <br><br>
+                        <table id="userAddresslist1">
+                            <thead>
+                                <tr>
+                                    <th style="padding-left: 5px;">Address Line 1</th>
+                                    <th style="padding-left: 45px;">Address Line 2</th>
+                                    <th style="padding-left: 45px;">City</th>
+                                    <th style="padding-left: 60px;">State</th>
+                                    <th style="padding-left: 80px;">Pin code </th>
+                                    <th style="padding-left: 100px;">Country</th>
+
+                                </tr>
+                            </thead>
+
+                        </table>
+                        <table class=" table" id="userAddresslist">
+                        </table>
+
+                        <form class="form-horizontal form-popup" id="userForm">
+                            <fieldset>
+                                <!-- Form Heading -->
+                                <legend>New User Address</legend>
+                                <!-- Text inputs for address line one -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Address Line 1:</label>
+                                    <div class="col-md-4">
+                                        <input id="address1" name="textinput" type="text"
+                                            placeholder="Enter Address Line 1" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- address line 2 -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Address Line 2:</label>
+                                    <div class="col-md-4">
+                                        <input id="address2" name="textinput" type="text"
+                                            placeholder="Enter Address Line 2" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- city -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">City:</label>
+                                    <div class="col-md-4">
+                                        <input id="city" name="textinput" type="text" placeholder="Enter City Name"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- state -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">State:</label>
+                                    <div class="col-md-4">
+                                        <input id="state" name="textinput" type="text" placeholder="Enter State"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- pin code -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Pin Code:</label>
+                                    <div class="col-md-4">
+                                        <input id="pincode" name="textinput" type="text" placeholder="Enter Pin Code"
+                                            class="form-control input-md" onkeypress="javascript:return isNumber(event)"
+                                            maxlength="6" required="">
+                                        <script> //validation on pincode for user to enter only a number user cannot enter alphabets
+                                            function isNumber(evt) {
+                                                var iKeyCode = (evt.which) ? evt.which : evt.keyCode
+                                                if (iKeyCode != 46 && iKeyCode > 31 && (iKeyCode < 48 || iKeyCode > 57))
+                                                    return false;
+
+                                                return true;
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+
+                                <!-- country -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Country:</label>
+                                    <div class="col-md-4">
+                                        <input id="country" name="textinput" type="text" placeholder="Enter Country"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- button -->
+                                <div id="form-btn">
+                                    <button type="button" class="btn btn-save"
+                                        onclick="saveDataAddress(),showuserAddress()">Save</button>
+                                    <button type="button" class="btn cancel btn-close"
+                                        onclick="closeFormAddress()">Close</button>
+                                </div>
+                            </fieldset>
+                        </form>
+
+                        <!-- update  -->
+                        <form class="form-horizontal form-popup" id="updateform">
+                            <fieldset>
+                                <!-- form heading -->
+                                <legend>Update User Address</legend>
+                                <!-- address line 1 -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Address Line 1:</label>
+                                    <div class="col-md-4">
+                                        <input id="address1_u" name="textinput" type="text"
+                                            placeholder="Enter Address Line 1" class="form-control input-md"
+                                            required="">
+                                        <input type="hidden" id="userindex">
+
+                                    </div>
+                                </div>
+
+                                <!-- add line 2 -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Address Line 2:</label>
+                                    <div class="col-md-4">
+                                        <input id="address2_u" name="textinput" type="text"
+                                            placeholder="Enter Address Line 2" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- city -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">City:</label>
+                                    <div class="col-md-4">
+                                        <input id="city_u" name="textinput" type="text" placeholder="Enter City"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- state -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">State:</label>
+                                    <div class="col-md-4">
+                                        <input id="state_u" name="textinput" type="text" placeholder="Enter State"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- pincode -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Pin Code:</label>
+                                    <div class="col-md-4">
+                                        <input id="pincode_u" name="textinput" type="text" placeholder="Enter Pin Code"
+                                            class="form-control input-md" onkeypress="javascript:return isNumber(event)"
+                                            maxlength="6" required="">
+                                        <script> //validation on pincode for user to enter and update only a number user cannot enter alphabets
+                                            function isNumber(evt) {
+                                                var iKeyCode = (evt.which) ? evt.which : evt.keyCode
+                                                if (iKeyCode != 46 && iKeyCode > 31 && (iKeyCode < 48 || iKeyCode > 57))
+                                                    return false;
+
+                                                return true;
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+
+                                <!-- country -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Country:</label>
+                                    <div class="col-md-4">
+                                        <input id="country_u" name="textinput" type="text"
+                                            placeholder="Enter Address Line 2" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+                                <br>
+                                <div id="form-btn">
+                                    <button type="button" class="btn btn-save"
+                                        onclick="UpdateAddress(),showuserAddress()">Update</button>
+                                    <button type="button" class="btn cancel btn-close"
+                                        onclick="closeFormAddress()">Close</button>
+                                </div>
+
+                            </fieldset>
+                        </form>
+
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+<script>
+    function openFormAddress() {
+        document.getElementById("userForm").style.display = "block";
+
+    }
+
+    function closeFormAddress() {
+        document.getElementById("userForm").style.display = "none";
+        document.getElementById("updateform").style.display = "none";
+    }
+    function updateformAddress() {
+        document.getElementById("updateform").style.display = "block";
+    }
+</script>
+
+
+</html>
