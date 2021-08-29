@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Team Assignment 1</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div id="menu" class="col-md-2" color="black">
+        <br /><br /><br />
+        <ul class="nav nav-pills nav-stacked cursor">
+          <li class="active">
+            <a data-toggle="tab" data-target="#home">
+              <i class="fa fa-home fa-fw" aria-hidden="true"></i>&emsp;Home</a>
+          </li>
+          <br />
+
+          <li>
+            <a data-toggle="tab" data-target="#projects"><span
+                class="glyphicon glyphicon-th-list"></span>&emsp;Projects</a>
+          </li>
+          <br />
+
+          <li>
+            <a data-toggle="tab" data-target="#modules_data">
+              <i class="fa fa-book fa-fw" aria-hidden="true"></i>&emsp;Modules</a>
+          </li>
+          <br />
+
+          <li>
+            <a data-toggle="tab" data-target="#api" id="api-load">
+              <span class="glyphicon glyphicon-cog"></span>&emsp;API</a>
+          </li>
+          <br />
+
+          <li>
+            <a data-toggle="tab" data-target="#user" onclick="showuser()">
+              <i class="fa fa-user" aria-hidden="true"> </i>&emsp;User</a>
+          </li>
+          <br />
+
+          <li>
+            <a data-toggle="tab" data-target="#userAddress" onclick="showuserAddress()">
+              <i class="fa fa-address-card" aria-hidden="true"></i>&emsp;User
+              Address
+            </a>
+          </li>
+          <br />
+        </ul>
+      </div>
+      <div id="content" class="col-md-8">
+        <div class="tab-content">
+          <div id="api" class="tab-pane fade">
+            <h1 class="heading"><b>API</b></h1>
+            <br />
+            <button type="button" class="btn btn-primary" id="addApi" onclick="openApiForm()">
+              <b>Add API</b>
+            </button>
+            <button type="button" class="btn btn-primary" id="search-api-btn">
+              <b>Search</b>
+            </button>
+            <input type="text" name="" id="search-api" class="form-control" style="display:inline" placeholder="Title">
+            <table id="listApi" class="table table-striped mt-5">
+              <thead>
+                <tr>
+                  <th>URL</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Project</th>
+                  <th>Module</th>
+                  <th>Method</th>
+                  <th>Request</th>
+                  <th>Response</th>
+                </tr>
+              </thead>
+              <tbody id="api-list" class="api-search"></tbody>
+            </table>
+            <div>
+              <form class="form-horizontal form-popup" id="api-form">
+                <fieldset>
+                  <legend id="new-api">New API</legend>
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="url">URL:</label>
+                    <div class="col-md-4">
+                      <input type="text" id="apiUrl" placeholder="Enter URL" class="form-control input-md" required />
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="title">Title:</label>
+                    <div class="col-md-4">
+                      <input type="text" id="apiTitle" placeholder="Enter Title" class="form-control input-md"
+                        required />
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="description">Description:</label>
+                    <div class="col-md-4">
+                      <input type="text" id="apiDescription" placeholder="Enter Description" class="form-control input-md" required />
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Projects:</label>
+                    <div class="col-md-4">
+                      <select name="apiProject" class="form-control" id="apiProject">
+                        <option value="Project-1">Project-1</option>
+                        <option value="Project-2">Project-2</option>
+                        <option value="Project-3">Project-3</option>
+                        <option value="Project-4">Project-4</option>
+                        <option value="Project-5">Project-5</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Modules:</label>
+                    <div class="col-md-4">
+                      <select name="apiModule" class="form-control" id="apiModule">
+                        <option value="Module-1">Module-1</option>
+                        <option value="Module-2">Module-2</option>
+                        <option value="Module-3">Module-3</option>
+                        <option value="Module-4">Module-4</option>
+                        <option value="Module-5">Module-5</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Methods:</label>
+                    <div class="col-md-4">
+                      <select name="apiMethod" class="form-control" id="apiMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="request">Request:</label>
+                    <div class="col-md-4">
+                      <select name="apiRequest" class="form-control" id="apiRequest">
+                        <option value="get">get</option>
+                        <option value="batchUpdate">batchUpdate</option>
+                        <option value="batchUpdate">create</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="response">Response:</label>
+                    <div class="col-md-4">
+                      <select name="apiResponse" class="form-control" id="apiResponse">
+                        <option value="404-ERROR">404-ERROR</option>
+                        <option value="401-CONTENT-HIDDEN">401-CONTENT-HIDDEN</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+                    <div id="form-btn">
+                      <input type="submit" class="btn btn-save" value="Save">
+                      <input type="button" class="btn btn-danger" value="Close" onclick="closeApiForm()">
+                    </div>
+                  <br>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>
