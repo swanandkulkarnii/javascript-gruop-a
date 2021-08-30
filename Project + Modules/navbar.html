@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <title>Team Assignment 1</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="text/javascript" src="js/searchUser.js"></script>
-
+    
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <script type="text/javascript" src="script.js"></script>
@@ -103,7 +101,11 @@
 
 
                     <div id="projects" class="tab-pane fade">
-                        <h3>Projects</h3>
+                        <h1>Project</h1>
+                        <div class="form-group" style="float: right;">
+                            <label>Search Project By Project Title</label>
+                            <input type="text" name="searchProject" id="searchProject" onkeyup="searchProject(this.value);">
+                        </div>
                         <div class="container">
                             <table class="table" id="proj_list">
                               <thead>
@@ -214,8 +216,11 @@
 
                     <div id="modules_data" class="tab-pane fade">
                         <h3>Modules</h3>
+                        <div class="form-group" style="float: right;">    
+                            <label>Search Module By Title</label>
+                            <input type="text" name="searchModule"  id="searchModule" onkeyup="searchModule(this.value);">
+                        </div>
                         <div class="container">
-                            <h1 class="text-center">Module</h1>
                             <form onsubmit="event.preventDefault();">
                                 <div class="form-group mt-5">
                                     <label for="project">Select Project</label>

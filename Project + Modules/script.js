@@ -88,10 +88,18 @@ const update_project = (project_id) =>
 // Delete Project From Local Storage
 const delete_project = (project_id) =>
 {
-	var project_data = JSON.parse(localStorage.getItem("Data"));
-	project_data=removeByAttr(project_data,"pid",project_id);
-	localStorage.setItem('Data',JSON.stringify(project_data));
-	fetch_project();
+	var confirm_delete_project = confirm("Are You Sure You Want To Delete This Project");
+	if(confirm_delete_project == true)
+	{
+		var project_data = JSON.parse(localStorage.getItem("Data"));
+		project_data=removeByAttr(project_data,"pid",project_id);
+		localStorage.setItem('Data',JSON.stringify(project_data));
+		fetch_project();
+	}
+	else
+	{
+
+	}
 }
 
 //Fetching Project List For Module.html
@@ -104,6 +112,28 @@ const fetch_project_list = () =>{
 	}	
 }
 
+//Search Project
+const searchProject = (searchByName) =>{
+	console.log(searchByName);
+	document.getElementById("proj_list").innerHTML='';
+	var project_data = JSON.parse(localStorage.getItem("Data"));
+	for(var i=0; i<project_data.length;i++)
+	{
+		if(project_data[i].projectTitle.toUpperCase().includes(searchByName.toUpperCase()))
+		{
+
+			console.log("HAHAHA");
+			document.getElementById("proj_list").innerHTML += `<tr>
+										<td>${project_data[i].projectTitle}</td>
+										<td>${project_data[i].projectDesc}</td>
+										<td>${project_data[i].proj_logo}</td>
+										<td><button onClick="get_proj_data(${project_data[i].pid})" class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal">Edit</button>
+                       					<button onClick="delete_project(${project_data[i].pid})" class="btn btn-danger mt-3">Delete</button>
+                       					<button class="btn btn-warning mt-3" data-toggle="modal" data-target="#modules" onClick="display_modules(${project_data[i].pid});">See Modules</button></td>
+										</tr>`; 
+		}
+	}
+} 
 //Create A Module In Project
 const add_module = () =>{
 	let proj_id = Number(document.getElementById("list_of_project").value);
@@ -181,6 +211,9 @@ const display_all_modules = () =>
 						<td>${project_data[i].projectTitle}</td>
 						<td>${JSON.stringify(project_data[i].modules[j].moduleTitle)}</td>
 						<td>${JSON.stringify(project_data[i].modules[j].moduleDesc)}</td>
+						<td>
+							<button class="btn btn-danger mt-3" onClick="delete_module(${project_data[i].pid},${project_data[i].modules[j].mid});">Delete Module</button>
+						</td>
 						</tr>`; 
 			}
 	}
@@ -202,16 +235,26 @@ var removeByAttr = function(arr, attr, value){
 
 const delete_module = (project_id,mid) =>
 {
-	var project_data = JSON.parse(localStorage.getItem("Data"));
-	for(var i=0; i<project_data.length;i++)
+	var confirm_delete_module = confirm("Are You Sure You Want To Delete This Module");
+	if(confirm_delete_module == true)
 	{
-		if(project_data[i].pid === project_id)
+		var project_data = JSON.parse(localStorage.getItem("Data"));
+		for(var i=0; i<project_data.length;i++)
 		{
-			project_data[i].modules = removeByAttr(project_data[i].modules,"mid",mid);
-		}	
+			if(project_data[i].pid === project_id)
+			{
+				project_data[i].modules = removeByAttr(project_data[i].modules,"mid",mid);
+			}	
+		}
+		localStorage.setItem('Data',JSON.stringify(project_data));
+		display_all_modules();
+		$('#modules').hide();
 	}
-	localStorage.setItem('Data',JSON.stringify(project_data));
-	$('#modules').hide();
+	else
+	{
+
+	}
+	
 }
 
 const edit_module = (project_id,module_id) =>{
@@ -262,4 +305,26 @@ const update_module = () =>
 	}		
 	localStorage.setItem("Data",JSON.stringify(data));
 		$('#modules').hide();
+}
+
+const searchModule = (searchByModule) =>{
+	document.getElementById("created_modules").innerHTML = '';
+	var project_data = JSON.parse(localStorage.getItem("Data"));
+	for(var i=0; i<project_data.length;i++)
+	{
+		for(var j = 0; j<project_data[i].modules.length;j++)
+		{
+			if(project_data[i].modules[j].moduleTitle.toUpperCase().includes(searchByModule.toUpperCase()))
+			{
+				document.getElementById("created_modules").innerHTML += `<tr>
+						<td>${project_data[i].projectTitle}</td>
+						<td>${JSON.stringify(project_data[i].modules[j].moduleTitle)}</td>
+						<td>${JSON.stringify(project_data[i].modules[j].moduleDesc)}</td>
+						<td>
+							<button class="btn btn-danger mt-3" onClick="delete_module(${project_data[i].pid},${project_data[i].modules[j].mid});">Delete Module</button>
+						</td>
+						</tr>`; 
+			}
+		}	
+	}
 }
