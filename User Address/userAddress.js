@@ -17,7 +17,8 @@ function saveDataAddress() {
         "city": city,
         "state": state,
         "pincode": pincode,
-        "country": country
+        "country": country,
+        "isDeleted": false
     })
     localStorage.setItem("userAddress", JSON.stringify(user_records));
     document.getElementById("userForm").reset();
@@ -37,7 +38,8 @@ function showuserAddress() {
     let h1 = '';
     let userAddresslist = document.getElementById("userAddresslist"); //style="padding-left: 5px; style="padding-left: 45px;style="padding-left: 50px;style="padding-left: 60px;style="padding-left: 80px;style="padding-left: 100px;style="padding-left: 150px;"
     user_records.forEach((item, index) => {
-        h1 += `
+        if (item.isDeleted === false) {
+            h1 += `
             <tbody>
                 <tr> 
                     <td >${item.address1}</td>
@@ -51,6 +53,22 @@ function showuserAddress() {
                 </tr>
             </tbody>
             `
+        }
+        // else {
+        //     h1 += `
+        //     <tbody>
+        //         <tr> 
+        //             <td ></td>
+        //             <td style="padding-left:45px"></td>
+        //             <td style="padding-left:30px"></td>
+        //             <td ></td>
+        //             <td ></td>
+        //             <td ></td>
+        //         </tr>
+        //     </tbody>
+        //     `
+
+        // }
     });
     userAddresslist.innerHTML = h1;
 }
@@ -102,13 +120,21 @@ function confirmdeleteUserAddress(index) {
         alert("Deletion Cancelled!")
     }
 }
-
+//isDeleted is set to true, data will not be deleted from localStorage, true isDeleted values will not be displayed
 function deleteUserAddress(index) {
     let d1 = localStorage.getItem("userAddress");
     let user_records = JSON.parse(d1);
-    user_records.splice(index, 1);
+    user_records[index].isDeleted = true;
     localStorage.setItem("userAddress", JSON.stringify(user_records));
     showuserAddress();
-    alert("Data deleted successfully!!");
 }
+//delete permanently from localStorage
+// function deleteUserAddress(index) {
+//     let d1 = localStorage.getItem("userAddress");
+//     let user_records = JSON.parse(d1);
+//     user_records.splice(index, 1);
+//     localStorage.setItem("userAddress", JSON.stringify(user_records));
+//     showuserAddress();
+//     alert("Data deleted successfully!!");
+// }
 
