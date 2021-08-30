@@ -23,10 +23,59 @@ function saveDataAddress() {
     localStorage.setItem("userAddress", JSON.stringify(user_records));
     document.getElementById("userForm").reset();
     document.getElementById("userForm").style.display = "none";
+    showuserAddress();
     alert("New Data Added Successfully!!");
 
 }
+// Search User Address 
+function searchUserAddress() {
+    let data = document.getElementById("searchUserAddress").value;
+    //console.log(data);
+    searchAdd(data);
+}
+function searchAdd(data) {
+    let u1 = localStorage.getItem("userAddress");
+    if (u1 == null) {
+        user_records = [];
+    }
+    else {
+        user_records = JSON.parse(u1);
+    }
+    let h1 = '';
+    let userAddresslist = document.getElementById("userAddresslist"); //style="padding-left: 5px; style="padding-left: 45px;style="padding-left: 50px;style="padding-left: 60px;style="padding-left: 80px;style="padding-left: 100px;style="padding-left: 150px;"
+    user_records.forEach((item, index) => {
+        if (item.isDeleted === false) {
+            let tempData = data.toUpperCase(); let tempAddress1 = item.address1.toUpperCase();
+            let tempAddress2 = item.address2.toUpperCase(); let tempCity = item.city.toUpperCase();
+            let tempState = item.state.toUpperCase(); let tempCountry = item.country.toUpperCase();
+            //console.log(tempData, tempAddress1, tempAddress2, tempCity, tempState, item.pincode, tempCountry);
+            if (tempAddress1 == tempData || tempAddress2 == tempData || tempCity == tempData || tempState == tempData ||
+                item.pincode == tempData || tempCountry == tempData) {
+                h1 += `
+            <tbody>
+                <tr> 
+                    <td >${item.address1}</td>
+                    <td style="padding-left:45px">${item.address2}</td>
+                    <td style="padding-left:30px">${item.city}</td>
+                    <td >${item.state}</td>
+                    <td >${item.pincode}</td>
+                    <td >${item.country}</td>
+                    <td ><button type="button" class="btn btn-primary"onclick="edituserAddress(${index}),updateformAddress()">Update</button></td>
+                    <td><button type="button" class="btn btn-danger" onclick="confirmdeleteUserAddress(${index})" >Delete</button></td> 
+                </tr>
+            </tbody>
+            `
+            }
+        }
+    });
+    userAddresslist.innerHTML = h1;
+    //document.getElementById("searchUserAddress").reset();
+    //document.getElementById("searchUserAddress").style.display = "none";
 
+}
+// search user ends
+
+//display non deleted data 
 function showuserAddress() {
     let u1 = localStorage.getItem("userAddress");
     if (u1 == null) {
@@ -107,6 +156,7 @@ function UpdateAddress() {
     user_records[saveIndex].country = country;
     localStorage.setItem("userAddress", JSON.stringify(user_records));
     document.getElementById("updateform").style.display = "none";
+    showuserAddress();
     alert("Data Updated");
 }
 

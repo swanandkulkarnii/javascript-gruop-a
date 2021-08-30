@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <script type="text/javascript" src="js/searchUser.js"></script> -->
+
     <script src="userAddress.js"></script>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
@@ -204,9 +204,24 @@
                         <!-- user address section starts -->
                         <h3><b>User Address</b></h3>
                         <button type="button" class="btn btn-primary"
-                            onclick="openFormAddress(),showuserAddress()"><b>Add
+                            onclick="openFormAddress(),showuserAddress()"><b>Add New
                                 User Address</b></button>
-                        <br><br>
+                        <button type="button" class="btn btn-primary" onclick="showuserAddress()"><b>Show All User
+                                Address Data</b></button><br>
+                        <br>
+                        <!-- Search user field -->
+                        <br>
+                        <div class="form-group">
+                            <!-- <label class="col-md-4 control-label" for="textinput">Address Line 1:</label> -->
+                            <div class="col-md-4">
+                                <input id="searchUserAddress" name="textinput" type="text"
+                                    placeholder="Search User Address" class="form-control input-md" required="">
+
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="searchUserAddress()">Search
+                                Address</button>
+                        </div>
+
                         <table id="userAddresslist1">
                             <thead>
                                 <tr>
