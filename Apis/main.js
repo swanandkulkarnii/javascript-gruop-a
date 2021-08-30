@@ -23,13 +23,15 @@ class API {
 
 // UI Class: Hnadle UI Tasks
 class UI {
+  // Display APIs
   static displayApis() {
     const apis = Store.getApis();
 
-    apis.forEach((api) => UI.addApiToList(api));
+    apis.forEach(UI.addApiToList);
   }
 
-  static addApiToList(api) {
+  // Add Api to List
+  static addApiToList(api, index) {
     const list = document.querySelector("#api-list");
 
     const row = document.createElement("tr");
@@ -43,29 +45,68 @@ class UI {
         <td>${api.method}</td>
         <td>${api.request}</td>
         <td>${api.response}</td>
-        <td><a href="#" class="btn btn-save btn-md delete">Update</a></td>
-        <td><a href="#" class="btn btn-danger btn-md delete">Delete</a></td>
+        <td><a href="#" class="btn btn-save btn-md update" onclick="UI.updateApi(${index})">Update</a></td>
+        <td><a href="#" class="btn btn-danger btn-md delete" onclick="UI.deleteApi(${index})">Delete</a></td>
         `;
     list.appendChild(row);
   }
 
+  // Delete Api
   static deleteApi(el) {
-    if (el.classList.contains("delete")) {
-      el.parentElement.parentElement.remove();
+    const apis = Store.getApis();
+    apis.splice(el, 1);
+    document.querySelector("#api-list").addEventListener("click", (event) => {
+      if (event.target.classList.contains("delete")) {
+        confirm("Do you want to delete?");
+        event.preventDefault();
+        removeItem(event.target);
+      }
+    });
+
+    function removeItem(button) {
+      var item = getItem(button),
+        confirmMessage;
+
+      if (item) {
+        confirmMessage = item.getAttribute("data-confirm");
+
+        if (!confirmMessage || window.confirm(confirmMessage)) {
+          item.parentNode.removeChild(item);
+        }
+      } else {
+        throw new Error("No item found");
+      }
     }
+
+    function getItem(button) {
+      var element = button.parentNode,
+        item = null;
+
+      while (element) {
+        if (element.nodeName === "LI" || element.nodeName === "TR") {
+          item = element;
+          break;
+        }
+
+        element = element.parentNode;
+      }
+
+      return item;
+    }
+    localStorage.setItem("apis", JSON.stringify(apis));
   }
 
-  static showAlert(message, className) {
-    const div = document.createElement("div");
-    div.className = `alert alert-${className}`;
-    div.appendChild(document.createTextNode(message));
-    const container = document.querySelector(".content");
-    const form = document.querySelector("#api-form");
-    container.insertBefore(div, form);
+  // static showAlert(message, className) {
+  //   const div = document.createElement("div");
+  //   div.className = `alert alert-${className}`;
+  //   div.appendChild(document.createTextNode(message));
+  //   const container = document.querySelector(".content");
+  //   const form = document.querySelector("#api-form");
+  //   container.insertBefore(div, form);
 
-    //Vanish in 3 Seconds
-    setTimeout(() => document.querySelector(".alert").remove(), 3000);
-  }
+  //   //Vanish in 3 Seconds
+  //   setTimeout(() => document.querySelector(".alert").remove(), 3000);
+  // }
 
   static clearFields() {
     document.querySelector("#apiUrl").value = "";
@@ -76,6 +117,43 @@ class UI {
     document.querySelector("#apiMethod").value = "";
     document.querySelector("#apiRequest").value = "";
     document.querySelector("#apiResponse").value = "";
+  }
+
+  static updateApi(index) {
+    //console.log("index", index);
+    const apis = Store.getApis();
+    document.querySelector("#apiUpdateUrl").value = `${apis[index].url}`;
+    document.querySelector("#apiUpdateTitle").value = `${apis[index].title}`;
+    document.querySelector(
+      "#apiUpdateDescription"
+    ).value = `${apis[index].description}`;
+    document.querySelector(
+      "#apiUpdateProject"
+    ).value = `${apis[index].project}`;
+    document.querySelector("#apiUpdateModule").value = `${apis[index].module}`;
+    document.querySelector("#apiUpdateMethod").value = `${apis[index].method}`;
+    document.querySelector(
+      "#apiUpdateRequest"
+    ).value = `${apis[index].request}`;
+    document.querySelector(
+      "#apiUpdateResponse"
+    ).value = `${apis[index].response}`;
+    //let saveButton = (document.querySelector("#save").value = "Update");
+    apiUpdateForm();
+    document.querySelector("#update").addEventListener("click", function () {
+      apis[index].url = document.querySelector("#apiUpdateUrl").value;
+      apis[index].title = document.querySelector("#apiUpdateTitle").value;
+      apis[index].description = document.querySelector(
+        "#apiUpdateDescription"
+      ).value;
+      apis[index].project = document.querySelector("#apiUpdateProject").value;
+      apis[index].module = document.querySelector("#apiUpdateModule").value;
+      apis[index].method = document.querySelector("#apiUpdateMethod").value;
+      apis[index].request = document.querySelector("#apiUpdateRequest").value;
+      apis[index].response = document.querySelector("#apiUpdateResponse").value;
+
+      localStorage.setItem("apis", JSON.stringify(apis));
+    });
   }
 }
 
@@ -118,6 +196,15 @@ const openApiForm = () =>
 // Event: Close Form
 const closeApiForm = () =>
   (document.querySelector("#api-form").style.display = "none");
+
+// Event: Update Form
+const apiUpdateForm = () => {
+  document.querySelector("#api-update-form").style.display = "block";
+};
+
+// Event: Close Form
+const closeUpdateApiForm = () =>
+  (document.querySelector("#api-update-form").style.display = "none");
 
 // Event: Add a API
 document.querySelector("#api-form").addEventListener("submit", (e) => {
@@ -165,18 +252,18 @@ document.querySelector("#api-form").addEventListener("submit", (e) => {
     // Add Api to Store
     Store.addApis(api);
 
-    //Show success message
-    UI.showAlert("API Added", "success");
+    // //Show success message
+    // UI.showAlert("API Added", "success");
 
     // Clear Fields
     UI.clearFields();
   }
 });
 
-// Event: Remove a API
-document.querySelector("#api-list").addEventListener("click", (e) => {
-  UI.deleteApi(e.target);
-});
+// // Event: Remove a API
+// document.querySelector("#api-list").addEventListener("click", (e) => {
+//   UI.deleteApi(e.target);
+// });
 
 // Event: Search API
 

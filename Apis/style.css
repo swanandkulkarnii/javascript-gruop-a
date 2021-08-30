@@ -136,6 +136,32 @@ body {
 }
 
 
+#api-update-form {
+    display: none;
+    position: absolute;
+    border: solid #f1f1f1;
+    border-width: 0 3px;
+    z-index: 9;
+    padding: 20px;
+    background-color: white;
+    height: 90%;
+    width:800px;
+    margin:30px auto 0;
+    margin-left: -400px;
+    margin-top: -10px;
+    top: 10%;
+    left: 60%;
+
+}
+
+#api-update-form input[type = "text"], input[type = "email"] {
+    width: 200%;
+}
+
+#api-update-form select {
+    width: 200%;
+}
+
 /* #apiForm {
     width: 60%;
     height: 90%;

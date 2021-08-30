@@ -65,10 +65,7 @@
             <button type="button" class="btn btn-primary" id="addApi" onclick="openApiForm()">
               <b>Add API</b>
             </button>
-            <button type="button" class="btn btn-primary" id="search-api-btn">
-              <b>Search</b>
-            </button>
-            <input type="text" name="" id="search-api" class="form-control" style="display:inline" placeholder="Title">
+            <input type="text" name="" id="search-api" class="form-control" style="display:inline; float:right;" placeholder="Search Title">
             <table id="listApi" class="table table-striped mt-5">
               <thead>
                 <tr>
@@ -179,12 +176,115 @@
                   </div>
                   <br />
                     <div id="form-btn">
-                      <input type="submit" class="btn btn-save" value="Save">
+                      <input type="submit" class="btn btn-save" value="Save" id="save">
                       <input type="button" class="btn btn-danger" value="Close" onclick="closeApiForm()">
                     </div>
                   <br>
                 </fieldset>
               </form>
+              <form class="form-horizontal form-popup" id="api-update-form">
+                <fieldset>
+                  <legend id="new-api">New API</legend>
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="url">URL:</label>
+                    <div class="col-md-4">
+                      <input type="text" id="apiUpdateUrl" placeholder="Enter URL" class="form-control input-md" required />
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="title">Title:</label>
+                    <div class="col-md-4">
+                      <input type="text" id="apiUpdateTitle" placeholder="Enter Title" class="form-control input-md"
+                        required />
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="description">Description:</label>
+                    <div class="col-md-4">
+                      <input type="text" id="apiUpdateDescription" placeholder="Enter Description" class="form-control input-md" required />
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Projects:</label>
+                    <div class="col-md-4">
+                      <select name="apiProject" class="form-control" id="apiUpdateProject">
+                        <option value="Project-1">Project-1</option>
+                        <option value="Project-2">Project-2</option>
+                        <option value="Project-3">Project-3</option>
+                        <option value="Project-4">Project-4</option>
+                        <option value="Project-5">Project-5</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Modules:</label>
+                    <div class="col-md-4">
+                      <select name="apiModule" class="form-control" id="apiUpdateModule">
+                        <option value="Module-1">Module-1</option>
+                        <option value="Module-2">Module-2</option>
+                        <option value="Module-3">Module-3</option>
+                        <option value="Module-4">Module-4</option>
+                        <option value="Module-5">Module-5</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Methods:</label>
+                    <div class="col-md-4">
+                      <select name="apiMethod" class="form-control" id="apiUpdateMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="request">Request:</label>
+                    <div class="col-md-4">
+                      <select name="apiRequest" class="form-control" id="apiUpdateRequest">
+                        <option value="get">get</option>
+                        <option value="batchUpdate">batchUpdate</option>
+                        <option value="create">create</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="response">Response:</label>
+                    <div class="col-md-4">
+                      <select name="apiResponse" class="form-control" id="apiUpdateResponse">
+                        <option value="404-ERROR">404-ERROR</option>
+                        <option value="401-CONTENT-HIDDEN">401-CONTENT-HIDDEN</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+                    <div id="form-btn">
+                      <input type="submit" class="btn btn-save" value="Update" id="update">
+                      <!-- <input type="submit" class="btn btn-save" value="update" id="update"> -->
+                      <input type="button" class="btn btn-danger" value="Close" onclick="closeUpdateApiForm()" id="close-update">
+                    </div>
+                  <br>
+                </fieldset>
+              </form>
+
+
             </div>
           </div>
         </div>
