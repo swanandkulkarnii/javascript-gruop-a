@@ -127,6 +127,7 @@ function deleteUserAddress(index) {
     user_records[index].isDeleted = true;
     localStorage.setItem("userAddress", JSON.stringify(user_records));
     showuserAddress();
+    alert("Data deleted successfully!!");
 }
 //delete permanently from localStorage
 // function deleteUserAddress(index) {
