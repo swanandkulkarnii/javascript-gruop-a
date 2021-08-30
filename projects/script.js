@@ -50,32 +50,28 @@ function showprojects() {
 
 
 }
+
+
 function deleteProjects(index) {
     let d1 = localStorage.getItem("projects");
     let projects_records = JSON.parse(d1);
     projects_records.splice(index, 1);
     localStorage.setItem("projects", JSON.stringify(projects_records));
     showprojects();
+    alert("Data deleted Sucessfully!")
 }
 
+function confirmdeleteProjectAddress(index) {
+    let i = index;
+    let confirmDelete = confirm("Are you sure you want to delete the data?");
+    if (confirmDelete) {
+        deleteProjects(i);
+    }
+    else {
+        alert("Deletion Cancelled!")
+    }
+}
 
-
-// //Get A Particular Project Deails From Local Storage To Update Form
-// const get_proj_data = (project_id) => {
-//     var project_data = JSON.parse(localStorage.getItem("Data"));
-//     document.getElementById("title").value = project_data[project_id].projectTitle;
-//     document.getElementById("desc").value = project_data[project_id].projectDesc;
-//     document.getElementById("update_button").innerHTML = `<button type="button" class="btn btn-primary" onClick="update_project(${project_data[project_id].pid});">Save changes</button>`;
-// }
-
-// // Update Project From Local Storage
-// const update_project = (project_id) => {
-//     var project_data = JSON.parse(localStorage.getItem("Data"));
-//     project_data[project_id].projectTitle = document.getElementById("edit_proj_title").value;
-//     project_data[project_id].projectDesc = document.getElementById("edit_proj_desc").value;
-//     localStorage.setItem('Data', JSON.stringify(project_data));
-//     fetch_project();
-// }
 
 
 function search() {
@@ -94,11 +90,7 @@ function search() {
 
 }
 
-// function search(){
-//     var id = document.myFormupdate.title_.value;
-//     var url = document.myFormupdate.description_.value;
-//     alert("Project Title: " + title);
-// }
+
 
 let editvalue;
 let title1, description1;
