@@ -502,10 +502,194 @@
         </div>
         <!-- API TAB END  -->
         
+        <!-- USER  SECTION STARTS -->
+        
       <div id="user" class="tab-pane fade">
-          <h3>Users</h3>
-      </div>
+          
+      <h1 class="heading"><b>Users</b></h1>
+                        <br>
 
+                        <button type="button" class="btn btn-primary" onclick="openForm()"><b>Add
+                                User</b></button>
+                        <button type="button" class="btn btn-primary" onclick="showuser()"><b>Show User
+                                list</b></button>
+                        <div class="form-group">
+                            <!-- <label class="col-md-4 control-label" for="textinput">Address Line 1:</label> -->
+                            <div class="col-md-4" style="padding-left: 600px;">
+                                <input id="searchUser" name="textinput" type="text" placeholder="Search User"
+                                    class="form-control input-md" required="" >
+                                <button type="button" class="btn btn-primary" onclick="searchUser()">Search
+                                    User</button>
+                            </div>
+
+                        </div>
+                        <br>
+                        <br>
+
+                        <table id="userlist1">
+                            <thead>
+                                <tr>
+                                    <th style="padding-left: 5px;">First Name</th>
+                                    <th style="padding-left: 45px;">Last Name</th>
+                                    <th style="padding-left: 45px;">Gender</th>
+                                    <th style="padding-left: 60px;">Email</th>
+                                    <th style="padding-left: 100px;">profile </th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                        <table class=" table" id="userlist">
+                        </table>
+
+
+
+                        <form class="form-horizontal form-popup" id="userForm">
+                            <fieldset>
+
+                                <!-- Form Name -->
+                                <legend>New User</legend>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">First Name:</label>
+                                    <div class="col-md-4">
+                                        <input id="fname" name="textinput" type="text"
+                                            placeholder="Enter your first name" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+                                <br>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Last Name:</label>
+                                    <div class="col-md-4">
+                                        <input id="lname" name="textinput" type="text"
+                                            placeholder="Enter your Last name" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+                                <br>
+
+                                <!-- Radio button-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Gender:</label>
+                                    <div class="col-md-4">
+                                        <select name="subject" class="form-control" id="gender">
+                                            <option value="SelectVal">Select Gender from Dropdown List</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Others">Others</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Email Id:</label>
+                                    <div class="col-md-4">
+                                        <input id="email" name="textinput" type="email"
+                                            placeholder="email as xyz2@gy.com" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+                                <br>
+
+                                <!-- File Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="logo">Profile picture:</label>
+                                    <div class="col-md-4">
+                                        <input id="profile" name="logo" class="input-file" type="file">
+                                    </div>
+                                </div>
+                                <br>
+                                <div id="form-btn">
+                                    <button type="button" class="btn btn-save"
+                                        onclick="saveData(),showuser()">Save</button>
+                                    <button type="button" class="btn cancel btn-close"
+                                        onclick="closeForm()">Close</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                    <form class="form-horizontal form-popup" id="updateform">
+                        <fieldset>
+
+                            <!-- Form Name -->
+                            <legend>Update User</legend>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="textinput">First Name:</label>
+                                <div class="col-md-4">
+                                    <input id="f_name" name="textinput" type="text" placeholder="Enter your first name"
+                                        class="form-control input-md" required="">
+                                    <input type="hidden" id="userindex">
+
+                                </div>
+                            </div>
+                            <br>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="textinput">Last Name:</label>
+                                <div class="col-md-4">
+                                    <input id="l_name" name="textinput" type="text" placeholder="Enter your Last name"
+                                        class="form-control input-md" required="">
+
+                                </div>
+                            </div>
+                            <br>
+
+                            <!-- Radio button-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="textinput">Gender:</label>
+                                <div class="col-md-4">
+                                    <select name="subject" class="form-control" id="g_ender">
+                                        <option value="SelectVal">Select Gender from Dropdown List</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Others">Others</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="textinput">Email Id:</label>
+                                <div class="col-md-4">
+                                    <input id="e_mail" name="textinput" type="email" placeholder="email as xyz2@gy.com"
+                                        class="form-control input-md" required="">
+
+                                </div>
+                            </div>
+                            <br>
+
+                            <!-- File Button
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="logo">Profile picture:</label>
+                                <div class="col-md-4">
+                                    <input id="profile" name="logo" class="input-file" type="file">
+                                </div>
+                            </div>
+                            <br> -->
+                            <div id="form-btn">
+                                <button type="button" class="btn btn-save" onclick="Update(),showuser()">Update</button>
+                                <button type="button" class="btn cancel btn-close" onclick="closeForm()">Close</button>
+                            </div>
+                        </fieldset>
+                  </form>
+                  
+
+        <!-- USER  SECTION ENDS -->
         
         
 <!-- USER ADDRESS SECTION STARTS -->
@@ -726,7 +910,8 @@
 <!-- USER ADDRESS SECTION ENDS -->
     
     <!-- API TAB JS FILE --><script src="api.js"></script> 
-          
+    <!--USER ADDRESS JSCRIPT FILE--><script src="UserScript1.js"></script>
+
           <!--      USER ADDRESS JSCRIPT FILE     --><script src="userAddress.js"></script>
 </body>
 
