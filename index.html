@@ -317,16 +317,228 @@
           <h3>Users</h3>
       </div>
 
-
+        
+        
+<!-- USER ADDRESS SECTION STARTS -->
       <div id="userAddress" class="tab-pane fade">
           <!-- user address section starts -->
           <h3><b>User Address</b></h3>
+        <button type="button" class="btn btn-primary"
+                            onclick="openFormAddress(),showuserAddress()"><b>Add New
+                                User Address</b></button>
+                        <button type="button" class="btn btn-primary" onclick="showuserAddress()"><b>Show All User
+                                Address Data</b></button><br>
+                        <br>
+                        <!-- Search user field -->
+                        <br>
+                        <div class="form-group">
+                            <!-- <label class="col-md-4 control-label" for="textinput">Address Line 1:</label> -->
+                            <div class="col-md-4">
+                                <input id="searchUserAddress" name="textinput" type="text"
+                                    placeholder="Search User Address" class="form-control input-md" required="">
+
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="searchUserAddress()">Search
+                                Address</button>
+                        </div>
+
+                        <table id="userAddresslist1">
+                            <thead>
+                                <tr>
+                                    <th style="padding-left: 5px;">Address Line 1</th>
+                                    <th style="padding-left: 45px;">Address Line 2</th>
+                                    <th style="padding-left: 45px;">City</th>
+                                    <th style="padding-left: 60px;">State</th>
+                                    <th style="padding-left: 80px;">Pin code </th>
+                                    <th style="padding-left: 100px;">Country</th>
+
+                                </tr>
+                            </thead>
+
+                        </table>
+                        <table class=" table" id="userAddresslist">
+                        </table>
+
+                        <form class="form-horizontal form-popup" id="userFormAddress">
+                            <fieldset>
+                                <!-- Form Heading -->
+                                <legend>New User Address</legend>
+                                <!-- Text inputs for address line one -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Address Line 1:</label>
+                                    <div class="col-md-4">
+                                        <input id="address1" name="textinput" type="text"
+                                            placeholder="Enter Address Line 1" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- address line 2 -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Address Line 2:</label>
+                                    <div class="col-md-4">
+                                        <input id="address2" name="textinput" type="text"
+                                            placeholder="Enter Address Line 2" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- city -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">City:</label>
+                                    <div class="col-md-4">
+                                        <input id="city" name="textinput" type="text" placeholder="Enter City Name"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- state -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">State:</label>
+                                    <div class="col-md-4">
+                                        <input id="state" name="textinput" type="text" placeholder="Enter State"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- pin code -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Pin Code:</label>
+                                    <div class="col-md-4">
+                                        <input id="pincode" name="textinput" type="text" placeholder="Enter Pin Code"
+                                            class="form-control input-md" onkeypress="javascript:return isNumber(event)"
+                                            maxlength="6" required="">
+                                        <script> //validation on pincode for user to enter only a number user cannot enter alphabets
+                                            function isNumber(evt) {
+                                                var iKeyCode = (evt.which) ? evt.which : evt.keyCode
+                                                if (iKeyCode != 46 && iKeyCode > 31 && (iKeyCode < 48 || iKeyCode > 57))
+                                                    return false;
+
+                                                return true;
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+
+                                <!-- country -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Country:</label>
+                                    <div class="col-md-4">
+                                        <input id="country" name="textinput" type="text" placeholder="Enter Country"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- button -->
+                                <div id="form-btn">
+                                    <button type="button" class="btn btn-save"
+                                        onclick="saveDataAddress(),showuserAddress()">Save</button>
+                                    <button type="button" class="btn cancel btn-close"
+                                        onclick="closeFormAddress()">Close</button>
+                                </div>
+                            </fieldset>
+                        </form>
+
+                        <!-- update  -->
+                        <form class="form-horizontal form-popup" id="updateformAddress">
+                            <fieldset>
+                                <!-- form heading -->
+                                <legend>Update User Address</legend>
+                                <!-- address line 1 -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Address Line 1:</label>
+                                    <div class="col-md-4">
+                                        <input id="address1_u" name="textinput" type="text"
+                                            placeholder="Enter Address Line 1" class="form-control input-md"
+                                            required="">
+                                        <input type="hidden" id="userindex">
+
+                                    </div>
+                                </div>
+
+                                <!-- add line 2 -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Address Line 2:</label>
+                                    <div class="col-md-4">
+                                        <input id="address2_u" name="textinput" type="text"
+                                            placeholder="Enter Address Line 2" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- city -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">City:</label>
+                                    <div class="col-md-4">
+                                        <input id="city_u" name="textinput" type="text" placeholder="Enter City"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- state -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">State:</label>
+                                    <div class="col-md-4">
+                                        <input id="state_u" name="textinput" type="text" placeholder="Enter State"
+                                            class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- pincode -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Pin Code:</label>
+                                    <div class="col-md-4">
+                                        <input id="pincode_u" name="textinput" type="text" placeholder="Enter Pin Code"
+                                            class="form-control input-md" onkeypress="javascript:return isNumber(event)"
+                                            maxlength="6" required="">
+                                        <script> //validation on pincode for user to enter and update only a number user cannot enter alphabets
+                                            function isNumber(evt) {
+                                                var iKeyCode = (evt.which) ? evt.which : evt.keyCode
+                                                if (iKeyCode != 46 && iKeyCode > 31 && (iKeyCode < 48 || iKeyCode > 57))
+                                                    return false;
+
+                                                return true;
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+
+                                <!-- country -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="textinput">Country:</label>
+                                    <div class="col-md-4">
+                                        <input id="country_u" name="textinput" type="text"
+                                            placeholder="Enter Address Line 2" class="form-control input-md"
+                                            required="">
+
+                                    </div>
+                                </div>
+                                <br>
+                                <div id="form-btn">
+                                    <button type="button" class="btn btn-save"
+                                        onclick="UpdateAddress(),showuserAddress()">Update</button>
+                                    <button type="button" class="btn cancel btn-close"
+                                        onclick="closeFormAddress()">Close</button>
+                                </div>
+
+                            </fieldset>
+                        </form>
       </div>
     </div>
 
-
+<!-- USER ADDRESS SECTION ENDS -->
     
     <!-- API TAB JS FILE --><script src="api.js"></script> 
+          
+          <!--      USER ADDRESS JSCRIPT FILE     --><script src="userAddress.js"></script>
 </body>
 
 </html>
