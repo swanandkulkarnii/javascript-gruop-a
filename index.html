@@ -71,13 +71,201 @@
 
 
             <div id="projects" class="tab-pane fade">
-                <h3>Projects</h3>
-            </div>
+                        <h1>Project</h1>
+                        <div class="form-group" style="float: right;">
+                            <label>Search Project By Project Title</label>
+                            <input type="text" name="searchProject" id="searchProject" onkeyup="searchProject(this.value);">
+                        </div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_project_modal">
+                            Add Project
+                        </button>
+                        <div class="container">
+                            <div class="modal fade" id="add_project_modal" tabindex="-1" role="dialog" aria-labelledby="add_project_modal" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Add Project</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form onsubmit="event.preventDefault();">
+                                                <h1>Add New Project</h1>
+                                                <input type="hidden" name="mid" id="mid">
+                                                <input type="hidden" name="proj_id" id="proj_id">
+                                                <div class="form-group mt-5">
+                                                    <label for="proj_title">Project Title:</label>
+                                                    <input type="text" class="form-control" placeholder="Enter Project Title" id="proj_title">
+                                                </div>
+                                                <div class="form-group mt-5">
+                                                  <label for="proj_desc">Project Description:</label>
+                                                  <input type="text" class="form-control" placeholder="Enter Project Description" id="proj_desc">
+                                                </div>
+                                                <div class="form-group mt-5 mb-5">
+                                                  <label for="proj_desc">Project Image:</label>
+                                                  <input type="text" class="form-control" placeholder="Add Image URL" id="proj_img_url">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary" onclick="add_project();fetch_project();">ADD Project</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table" id="proj_list">
+                              <thead>
+                                <tr>
+                                  <th>Project Title</th>
+                                  <th>Project Desc</th>
+                                  <th>Project Image</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                                <tbody border="1">
+            
+                                </tbody> 
+                            </table>      
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Project Details</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body" id="modal-body">
+                                    <form onsubmit="event.preventDefault();">
+                                      <div class="form-group mt-5">
+                                        <label for="proj_title">Project Title:</label>
+                                        <input type="text" class="form-control" placeholder="Enter Project Title" id="edit_proj_title">
+                                      </div>
+                                      <div class="form-group mt-5">
+                                        <label for="proj_desc">Project Description:</label>
+                                        <input type="text" class="form-control" placeholder="Enter Project Description" id="edit_proj_desc">
+                                      </div>
+                                      <div class="form-group mt-5" id="update_button">
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="modal fade" id="modules" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modules In This Project</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body" id="modal-body">
+                                            <table class="table" id="module_list">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Module Title</th>
+                                                        <th>Module Desc</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                    
+                                                </tbody> 
+                                            </table>
+                                        </div>
+                                        <div style="display: none;" id="edit_module">
+                                            <form onsubmit="event.preventDefault();">
+                                            <h1>Edit Module</h1>
+                                            <div class="form-group mt-5">
+                                                <label for="proj_title">Module Title:</label>
+                                                <input type="text" class="form-control" placeholder="Enter Module Title" id="edit_module_title">
+                                            </div>
+                                            <div class="form-group mt-5">
+                                                <label for="proj_desc">Module Description:</label>
+                                                <input type="text" class="form-control" placeholder="Enter Module Description" id="edit_module_desc">
+                                            </div>
+                                            <button class="btn btn-success" onclick="update_module();">Update Module</button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
 
 
-            <div id="modules" class="tab-pane fade">
-                <h3>Modules</h3>
-            </div>
+                    <div id="modules_data" class="tab-pane fade">
+                        <h3>Modules</h3>
+                        <div class="form-group" style="float: right;">    
+                            <label>Search Module By Title</label>
+                            <input type="text" name="searchModule"  id="searchModule" onkeyup="searchModule(this.value);">
+                        </div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_module_modal">
+                            Add Modules
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="add_module_modal" tabindex="-1" role="dialog" aria-labelledby="add_module_modal" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Modules</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form onsubmit="event.preventDefault();">
+                                            <div class="form-group mt-5">
+                                                <label for="project">Select Project</label>
+                                                <select id="list_of_project" class="form-control">
+                        
+                                                </select>
+                                            </div>
+                                            <div class="form-group mt-5">
+                                              <label for="module_title">Module Title:</label>
+                                              <input type="text" class="form-control" placeholder="Enter Module Title" id="module_title">
+                                            </div>
+                                            <div class="form-group mt-5">
+                                              <label for="proj_desc">Project Description:</label>
+                                              <input type="text" class="form-control" placeholder="Enter Module Description" id="module_desc">
+                                            </div>  
+                                            <button type="submit" class="btn btn-primary" onclick="add_module();display_all_modules();">ADD Module</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="container">
+                            
+                        </div>  
+                        <table class="table" id="created_modules">
+                            <thead>
+                                <th>Project Title</th>
+                                <th>Module Title</th>
+                                <th>Module Description</th>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
       
       
       
