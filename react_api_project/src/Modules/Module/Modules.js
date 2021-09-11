@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Input from '../../UI/Input/Input';
+import Input from '../../Shared/UI/Input/Input';
 import ModuleService from './ModuleService';
 const Modules = () => {
     const database = JSON.parse(localStorage.getItem('Proj_Module_Api'));
