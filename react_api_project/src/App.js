@@ -1,24 +1,26 @@
-import logo from "./logo.svg";
-import "./App.css";
+import './App.css';
+import { Redirect, Route, Switch } from 'react-router';
+import Home from './Modules/Home';
+import Project from './Modules/Project/Project';
+import Modules from './Modules/Module/Modules';
+import Api from './Modules/Api/Api'
+import Users from './Modules/Users/Users';
+import UsersAddress from './Modules/Users Address/UserAddress';
+import Layout  from './Shared/UI/Header/Layout';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+    <Switch>
+      <Route path='/' exact><Home/></Route>
+      <Route path='/project' exact><Project/></Route>
+      <Route path='/modules' exact><Modules/></Route>
+      <Route path='/api' exact><Api/></Route>
+      <Route path='/users' exact><Users/></Route>
+      <Route path='/useraddress' exact><UsersAddress/></Route>
+      <Route path='/'><Redirect to='/'></Redirect></Route>
+    </Switch>
+    </Layout>
   );
 }
 
