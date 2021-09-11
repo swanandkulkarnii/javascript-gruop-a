@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react';
-import Input from '../../UI/Input/Input';
+import Input from '../../Shared/UI/Input/Input';
 import ProjectService from './ProjectService';
 const Project = () => {
     const [projTitle, setProjTitle] = useState('');

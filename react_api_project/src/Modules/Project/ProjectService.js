@@ -1,7 +1,7 @@
 import React from 'react'
-import Delete from '../../UI/Buttons/Delete';
-import Edit from '../../UI/Buttons/Edit';
-import Td from '../../UI/Table/Td';
+import Delete from '../../Shared/UI/Buttons/Delete';
+import Edit from '../../Shared/UI/Buttons/Edit';
+import Td from '../../Shared/UI/Table/Td';
 const ProjectService = () => {
     const database = JSON.parse(localStorage.getItem('Proj_Module_Api'));
     const editHandler = (pid) =>{
