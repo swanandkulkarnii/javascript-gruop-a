@@ -5,7 +5,9 @@ export const ApiRequest = (props) => {
 
   return (
     <>
-      <div className="form-group">
+      <div className="form-group mt-3">
+        {" "}
+        Request
         <select
           className="form-control"
           onChange={props.onChange}
