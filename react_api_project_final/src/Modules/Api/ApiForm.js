@@ -6,8 +6,8 @@ import { ApiResponse } from "./ApiResponse";
 
 const ApiForm = () => {
   const projectList = JSON.parse(localStorage.getItem("Proj_Module_Api"));
-  const [apiProjectId, setApiProjectId] = useState();
-  // const [apiModuleId, setApiModuleId] = useState();
+  const [apiProjectTitle, setApiProjectTitle] = useState();
+  const [moduleId, setModuleId] = useState();
   const [apiUrl, setApiUrl] = useState();
   const [apiTitle, setApiTitle] = useState();
   const [apiDesc, setApiDesc] = useState();
@@ -15,13 +15,20 @@ const ApiForm = () => {
   const [apiRequest, setApiRequest] = useState();
   const [apiResponse, setApiResponse] = useState();
 
-  const apiProjectHandler = (event) => {
-    setApiProjectId(event.target.value);
+  const apiModuleHandler = (event) => {
+    setModuleId(event.target.value);
   };
+  function filterByID(item) {
+    if (item.projTitle == apiProjectTitle) {
+      return true;
+    }
+    return false;
+  }
+  let arrByID = projectList.filter(filterByID);
 
-  // const apiModuleHandler = (event) => {
-  //   setApiModuleId(event.target.value);
-  // };
+  const apiProjectHandler = (event) => {
+    setApiProjectTitle(event.target.value);
+  };
 
   const apiRequestHandler = (event) => {
     setApiRequest(event.target.value);
@@ -51,8 +58,8 @@ const ApiForm = () => {
       apiUrl !== "" &&
       apiTitle !== "" &&
       apiDesc !== "" &&
-      apiProjectId !== "" &&
-      //apiModuleId !== "" &&
+      apiProjectTitle !== "" &&
+      moduleId !== "" &&
       apiMethod !== "" &&
       apiRequest !== "" &&
       apiResponse !== ""
@@ -62,8 +69,8 @@ const ApiForm = () => {
         apiUrl: apiUrl,
         apiTitle: apiTitle,
         apiDesc: apiDesc,
-        apiProject: apiProjectId,
-        //apiModule: apiModuleId,
+        apiProject: apiProjectTitle,
+        apiModule: moduleId,
         apiMethod: apiMethod,
         apiRequest: apiRequest,
         apiResponse: apiResponse,
@@ -74,8 +81,8 @@ const ApiForm = () => {
       setApiUrl("");
       setApiTitle("");
       setApiDesc("");
-      setApiProjectId("");
-      //setApiModuleId("");
+      setApiProjectTitle("");
+      setModuleId("");
       setApiMethod("");
     } else {
       alert("Please Fill All Fields");
@@ -123,7 +130,7 @@ const ApiForm = () => {
         <select
           className="form-control"
           onChange={apiProjectHandler}
-          value={apiProjectId}
+          value={apiProjectTitle}
         >
           <option>Select Project</option>
           {projectList.map((value, index) => {
@@ -131,18 +138,25 @@ const ApiForm = () => {
           })}
         </select>
       </div>
-      {/* <div className="form-group">
-      <select
-        className="form-control"
-        onChange={apiModuleHandler}
-        value={apiModuleId}
-      >
-        <option>Select Module</option>
-        {projectList.map((value, index) => {
-          return <option value={value.pid}>{value.moduleTitle}</option>;
-        })}
-      </select>
-    </div> */}
+      <div className="form-group mt-3">
+        Module
+        <select
+          className="form-control"
+          onChange={apiModuleHandler}
+          value={moduleId}
+        >
+          <option>Select Module</option>
+          {arrByID.map((value, index) => {
+            return value.modules.map((moduleData, index) => {
+              return (
+                <option value={moduleData.moduleTitle}>
+                  {moduleData.moduleTitle}
+                </option>
+              );
+            });
+          })}
+        </select>
+      </div>
       <ApiMethod value={apiMethod} onChange={apiMethodHandler} />
       <ApiRequest value={apiRequest} onChange={apiRequestHandler} />
       <ApiResponse value={apiResponse} onChange={apiResponseHandler} />
@@ -152,3 +166,4 @@ const ApiForm = () => {
 };
 
 export default ApiForm;
+
