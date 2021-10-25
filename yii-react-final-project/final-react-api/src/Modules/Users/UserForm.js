@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Input from "../../Shared/UI/Input/Input";
 
-//import UsersService from "./UsersService";
-
 const UserForm = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
   const [userEmail, setUserEmail] = useState("");
-
-  useEffect(() => {
-    if (localStorage.getItem("Users") == null) {
-      localStorage.setItem("Users", JSON.stringify([]));
-    }
-  }, []);
+  const [userProfile, setuserProfile] = useState("");
 
   const firstNameHandler = (event) => {
     setFirstName(event.target.value);
@@ -27,32 +20,8 @@ const UserForm = (props) => {
   const userEmailHandler = (event) => {
     setUserEmail(event.target.value);
   };
-  const submitUserHandler = (event) => {
-    event.preventDefault();
-    if (
-      firstName !== "" &&
-      lastName !== "" &&
-      gender !== "" &&
-      userEmail !== ""
-    ) {
-      const users = {
-        uid: Math.floor(Math.random() * 100000 + 1),
-        firstName: firstName,
-        lastName: lastName,
-        gender: gender,
-        userEmail: userEmail,
-      };
-      const database = JSON.parse(localStorage.getItem("Users"));
-      database.push(users);
-      localStorage.setItem("Users", JSON.stringify(database));
-      setFirstName("");
-      setLastName("");
-      setGender("");
-      setUserEmail("");
-      window.location.reload(true);
-    } else {
-      alert("Please Fill All Fields");
-    }
+  const userprofileHandler = (event) => {
+    setuserProfile(event.target.value);
   };
 
   return (
@@ -109,9 +78,28 @@ const UserForm = (props) => {
               value={userEmail}
               onChange={userEmailHandler}
             ></Input>
+            <Input
+              label="Profile Picture"
+              input={{
+                id: "pro_pic",
+                type: "text",
+                placeholder: "Profile picture url ",
+                name: "userProfile",
+              }}
+              value={userProfile}
+              onChange={userprofileHandler}
+            ></Input>
             <button
               className="btn btn-success mt-5"
-              onClick={submitUserHandler}
+              onClick={() => {
+                props.addUser(
+                  firstName,
+                  lastName,
+                  gender,
+                  userEmail,
+                  userProfile
+                );
+              }}
             >
               Add User
             </button>
@@ -129,3 +117,4 @@ const UserForm = (props) => {
 };
 
 export default UserForm;
+
