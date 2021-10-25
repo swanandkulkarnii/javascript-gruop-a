@@ -1,124 +1,110 @@
-import React, { useState, useEffect } from "react";
-import PopupModal from "../../Shared/UI/PopupModal/PopupModal";
-import ProjectService from "./ProjectService";
-import ProjectForm from "./ProjectForm";
-import Td from "../../Shared/UI/Table/Td";
-import Input from "../../Shared/UI/Input/Input";
-import axios from "axios";
-
+import React, { useState, useEffect } from 'react';
+import PopupModal from '../../Shared/UI/PopupModal/PopupModal';
+import Input from '../../Shared/UI/Input/Input';
+import ProjectForm from './ProjectForm';
+import ProjectService from './ProjectService';
+import axios from 'axios';
+import Pagination from '../../Shared/UI/Pagination/Pagination';
 const Project = () => {
-  const [buttonPopup, setButtonPopup] = useState(false);
-  const [searchProjectTitle, setSearchProjectTitle] = useState("");
-  const [searchResult, setSearchResult] = useState("");
-  const [project_data, setProjectData] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/project")
-      .then((res) => setProjectData(res.data.items));
-  }, []);
-
-  const searchProjectTitleHandler = (event) => {
-    setSearchProjectTitle(event.target.value);
-    var project_data = JSON.parse(localStorage.getItem("Proj_Module_Api"));
-    for (var i = 0; i < project_data.length; i++) {
-      if (
-        project_data[i].projTitle
-          .toUpperCase()
-          .includes(searchProjectTitle.toUpperCase())
-      ) {
-        setSearchResult(
-          <tr>
-            <Td data={`${JSON.stringify(project_data[i].projTitle)}`}></Td>
-            <Td data={`${JSON.stringify(project_data[i].projDesc)}`}></Td>
-            <Td>
-              <a href={`${JSON.stringify(project_data[i].projImg)}`}>Image</a>
-            </Td>
-          </tr>
-        );
-      }
+    const [project_data, setProjectData] = useState([]);
+    const [edit_project_data, setEditProjectData] = useState('');
+    const [buttonPopup, setButtonPopup] = useState(false);
+    const [searchProjectTitle, setSearchProjectTitle] = useState('');
+    //Pagination Variables 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [projectsPerPage] = useState(2);
+    useEffect(()=>{
+        loadProjectData()
+    },[]);
+    const loadProjectData = async() => {
+        await axios.get("http://localhost:8888/project").then(res => setProjectData(res.data.items));
     }
-  };
+    //Pagination Logic
+    const indexOfLastProject = currentPage * projectsPerPage;
+    const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+    const currentProjects = project_data.slice(
+        indexOfFirstProject,
+        indexOfLastProject
+    );
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  var removeByAttr = function (arr, attr, value) {
-    var i = arr.length;
-    while (i--) {
-      if (
-        arr[i] &&
-        arr[i].hasOwnProperty(attr) &&
-        arguments.length > 2 &&
-        arr[i][attr] === value
-      ) {
-        arr.splice(i, 1);
-      }
+    async function submitProjectHandler(projTitle,projDesc){
+        if(projTitle!=='' && projDesc!=='')
+        {
+            setButtonPopup(false);
+            await axios.post('http://localhost:8888/project/create',{
+                "title":projTitle,
+                "description":projDesc
+            });
+            loadProjectData();
+        }
+        else{
+            alert("Please Fill All Fields");
+        }
     }
-    return arr;
-  };
+    const searchProjectTitleHandler = async (event) =>{
+        setSearchProjectTitle(event.target.value);
+        const response = await axios.get(`http://localhost:8888/project?filter[title][like]=${searchProjectTitle}`);
+        setProjectData(response.data.items);
+    }
+    const deleteHandler = async (pid) =>{
+        await axios.put(`http://localhost:8888/project/update?id=${pid}`,{'is_delete':1}).then(()=>{
+            console.log("DELETE Successfully");
+        });
+        loadProjectData();
+    }
+    const editHandler = async (pid) =>{
+        setButtonPopup(true);
+        await axios.get(`http://localhost:8888/project/view?id=${pid}`)
+        .then(res => setEditProjectData(JSON.stringify(res.data)));
+        console.log("State Variable",edit_project_data)
+    }
+    return (
+        <div className="container">   
+            <h1 className="text-center"> Add New Projects</h1>
+            <Input 
+                label="Search" 
+                input={{
+                    id : 'search_project',
+                    type : 'search',
+                    placeholder:'Enter Project Title',
+                    name:"searchProject"
+                }}
+                value = {searchProjectTitle}
+                onChange={searchProjectTitleHandler}
+            ></Input>
+            
+            <button
+                type="button"
+                className="btn btn-primary my-5"
+                onClick={() => setButtonPopup(true)}
+            >
+                Add New Project
+            </button>
 
-  const deleteHandler = async (pid) => {
-    await axios
-      .delete(`http://localhost:8080/project/delete?id=${pid}`)
-      .then(() => {
-        console.log("DELETE Successfully");
-      });
-    window.location.reload(true);
-  };
-  const editHandler = (pid) => {
-    console.log("Edit" + pid);
-  };
-  return (
-    <>
-      <h1 className="text-center"> PROJECTS</h1>
-      <div className="container">
-        <table className="table table-success table-striped">
-          <thead>
-            <th>Project Title</th>
-            <th>Project Description</th>
-            <th>Project Image</th>
-          </thead>
-          {searchResult}
-        </table>
-        <Input
-          label="Search"
-          input={{
-            id: "search_project",
-            type: "search",
-            placeholder: "Enter Project Title",
-            name: "searchProject",
-          }}
-          value={searchProjectTitle}
-          onChange={searchProjectTitleHandler}
-        ></Input>
-        <button
-          type="button"
-          className="btn btn-outline-secondary"
-          onClick={() => setButtonPopup(true)}
-        >
-          Add New Project
-        </button>
+            <table className="table">
+                <thead>
+                    <th>Project Title</th>
+                    <th>Project Description</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </thead>
+                {<ProjectService database = {currentProjects} onEdit = {editHandler} onDelete = {deleteHandler}></ProjectService>}
+            </table>
+            <PopupModal
+                trigger={buttonPopup}
+                settrigger={setButtonPopup}
+                title = "Add Project"
+            >
+                <ProjectForm addProject={submitProjectHandler} pid={edit_project_data}></ProjectForm>
+            </PopupModal>
+            <Pagination
+                dataPerPage={projectsPerPage}
+                totalData={project_data.length}
+                paginate={paginate}
+            />
+        </div>
+    )
+}
 
-        <table className="table table-success table-striped">
-          <thead>
-            <th>Project Title</th>
-            <th>Project Description</th>
-            <th>Project Image</th>
-          </thead>
-
-          {
-            <ProjectService
-              database={project_data}
-              onEdit={editHandler}
-              onDelete={deleteHandler}
-            ></ProjectService>
-          }
-        </table>
-
-        <PopupModal trigger={buttonPopup} settrigger={setButtonPopup}>
-          <ProjectForm></ProjectForm>
-        </PopupModal>
-      </div>
-    </>
-  );
-};
-
-export default Project;
+export default Project

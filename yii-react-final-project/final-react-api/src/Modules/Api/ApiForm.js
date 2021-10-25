@@ -1,25 +1,39 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Input from "../../Shared/UI/Input/Input";
 import { ApiMethod } from "./ApiMethod";
 import { ApiRequest } from "./ApiRequest";
 import { ApiResponse } from "./ApiResponse";
 
-const ApiForm = () => {
-  const [apiProjectTitle, setApiProjectTitle] = useState();
-  const [moduleId, setModuleId] = useState();
+const ApiForm = (props) => {
+  const [apiProjectId, setApiProjectId] = useState();
+  const [apiModuleId, setModuleId] = useState();
   const [apiUrl, setApiUrl] = useState();
   const [apiTitle, setApiTitle] = useState();
   const [apiDesc, setApiDesc] = useState();
   const [apiMethod, setApiMethod] = useState();
   const [apiRequest, setApiRequest] = useState();
   const [apiResponse, setApiResponse] = useState();
+  const [projectData, setProjectData] = useState([]);
+  const [moduleData, setModuleData] = useState([]);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:8888/project?expand=modules")
+      .then((res) => setProjectData(res.data.items));
+  }, []);
   const apiModuleHandler = (event) => {
     setModuleId(event.target.value);
   };
 
   const apiProjectHandler = (event) => {
-    setApiProjectTitle(event.target.value);
+    setApiProjectId(event.target.value);
+    var projectID = event.target.value;
+    projectData.filter((currentValue) => {
+      if (Number(currentValue.project_id) === Number(projectID)) {
+        setModuleData(currentValue.modules);
+      }
+    });
   };
 
   const apiRequestHandler = (event) => {
@@ -44,43 +58,10 @@ const ApiForm = () => {
     setApiMethod(event.target.value);
   };
 
-  const submitApiHandler = (event) => {
-    event.preventDefault();
-    if (
-      apiUrl !== "" &&
-      apiTitle !== "" &&
-      apiDesc !== "" &&
-      apiProjectTitle !== "" &&
-      moduleId !== "" &&
-      apiMethod !== "" &&
-      apiRequest !== "" &&
-      apiResponse !== ""
-    ) {
-      const api = {
-        apiId: Math.floor(Math.random() * 100000 + 1),
-        apiUrl: apiUrl,
-        apiTitle: apiTitle,
-        apiDesc: apiDesc,
-        apiProject: apiProjectTitle,
-        apiModule: moduleId,
-        apiMethod: apiMethod,
-        apiRequest: apiRequest,
-        apiResponse: apiResponse,
-      };
-
-      setApiUrl("");
-      setApiTitle("");
-      setApiDesc("");
-      setApiProjectTitle("");
-      setModuleId("");
-      setApiMethod("");
-    } else {
-      alert("Please Fill All Fields");
-    }
-  };
+  
 
   return (
-    <form onSubmit={submitApiHandler}>
+    <>
       <Input
         label="API URL"
         input={{
@@ -120,9 +101,12 @@ const ApiForm = () => {
         <select
           className="form-control"
           onChange={apiProjectHandler}
-          value={apiProjectTitle}
+          value={apiProjectId}
         >
           <option>Select Project</option>
+          {projectData.map((value, index) => (
+            <option value={value.project_id}>{value.title}</option>
+          ))}
         </select>
       </div>
       <div className="form-group mt-3">
@@ -130,16 +114,19 @@ const ApiForm = () => {
         <select
           className="form-control"
           onChange={apiModuleHandler}
-          value={moduleId}
+          value={apiModuleId}
         >
           <option>Select Module</option>
+          {moduleData.map((value, index) => {
+            return <option value={value.module_id}>{value.title}</option>;
+          })}
         </select>
       </div>
       <ApiMethod value={apiMethod} onChange={apiMethodHandler} />
       <ApiRequest value={apiRequest} onChange={apiRequestHandler} />
       <ApiResponse value={apiResponse} onChange={apiResponseHandler} />
-      <button className="btn btn-success mt-5">Add API</button>
-    </form>
+      <button className="btn btn-success mt-5" onClick={()=>{props.addApi(apiUrl, apiTitle, apiDesc, apiProjectId, apiModuleId, apiMethod, apiRequest, apiResponse)}}>Add API</button>
+    </>
   );
 };
 

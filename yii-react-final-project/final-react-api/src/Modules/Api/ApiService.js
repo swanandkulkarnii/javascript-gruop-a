@@ -3,7 +3,6 @@ import Delete from "../../Shared/UI/Buttons/Delete";
 import Edit from "../../Shared/UI/Buttons/Edit";
 import Td from "../../Shared/UI/Table/Td";
 const ApiService = (props) => {
-  const apiData = JSON.parse(localStorage.getItem("Apis"));
   if (props.apiData !== null) {
     return (
       <tbody>
@@ -23,7 +22,7 @@ const ApiService = (props) => {
                 <Edit
                   other={{
                     onClick: () => {
-                      props.onApiEdit(value.id);
+                      props.onApiEdit(value.api_id);
                     },
                   }}
                   buttonName="Edit"
@@ -33,7 +32,7 @@ const ApiService = (props) => {
                 <Delete
                   other={{
                     onClick: () => {
-                      props.onApiDelete(value.id);
+                      props.onApiDelete(value.api_id);
                     },
                   }}
                   buttonName="Delete"

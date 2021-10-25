@@ -3,52 +3,63 @@ import PopupModal from "../../Shared/UI/PopupModal/PopupModal";
 import ApiService from "./ApiService";
 import ApiForm from "./ApiForm";
 import Input from "../../Shared/UI/Input/Input";
-import Td from "../../Shared/UI/Table/Td";
 import axios from "axios";
-
+import Pagination from '../../Shared/UI/Pagination/Pagination';
 const Api = () => {
   const [buttonPopup, setButtonPopup] = useState(false);
   const [searchApiTitle, setSearchApiTitle] = useState("");
-  const [searchResult, setSearchResult] = useState("");
   const [apiData, setApiData] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [apisPerPage] = useState(2);
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api?expand=module,project")
-      .then((res) => setApiData(res.data.items));
+    loadApiData();
   }, []);
-
-  const searchApiTitleHandler = (event) => {
-    setSearchApiTitle(event.target.value);
-    //const apiData = JSON.parse(localStorage.getItem("Apis"));
-    for (var i = 0; i < apiData.length; i++) {
-      if (
-        apiData[i].title.toUpperCase().includes(searchApiTitle.toUpperCase())
-      ) {
-        setSearchResult(
-          <tr>
-            <Td data={`${JSON.stringify(apiData[i].url)}`}></Td>
-            <Td data={`${JSON.stringify(apiData[i].title)}`}></Td>
-            <Td data={`${JSON.stringify(apiData[i].description)}`}></Td>
-            <Td data={`${JSON.stringify(apiData[i].project.title)}`}></Td>
-            <Td data={`${JSON.stringify(apiData[i].module.title)}`}></Td>
-            <Td data={`${JSON.stringify(apiData[i].method)}`}></Td>
-            <Td data={`${JSON.stringify(apiData[i].response)}`}></Td>
-            <Td data={`${JSON.stringify(apiData[i].request)}`}></Td>
-          </tr>
-        );
-        console.log(`${JSON.stringify(apiData[i].title)}`);
-      }
+  const loadApiData = async () =>{
+    await axios
+    .get("http://localhost:8888/api?expand=module,project")
+    .then((res) => setApiData(res.data.items));
+  }
+  const indexOfLastApis = currentPage * apisPerPage;
+    const indexOfFirstApis = indexOfLastApis - apisPerPage;
+    const currentApis = apiData.slice(
+        indexOfFirstApis,
+        indexOfLastApis
+    );
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const submitApiHandler = async (apiUrl, apiTitle, apiDesc, apiProjectId, apiModuleId, apiMethod, apiRequest, apiResponse) =>{
+    if(apiUrl !== "" && apiTitle !== "" && apiDesc !== "" && apiProjectId !== "" && apiModuleId !== "" && apiMethod !== "" && apiRequest !== "" && apiResponse !== "")
+    {
+        setButtonPopup(false);
+        await axios.post("http://localhost:8888/api/create", {
+        url: apiUrl,
+        title: apiTitle,
+        description: apiDesc,
+        project_id: apiProjectId,
+        module_id: apiModuleId,
+        method: apiMethod,
+        request: apiRequest,
+        response: apiResponse,
+      });
+      loadApiData();
     }
+    else{
+        alert("Please Fill All Fields");
+    }
+  }
+
+  const  searchApiTitleHandler = async(event) =>{
+    setSearchApiTitle(event.target.value);
+    const response = await axios.get(`http://localhost:8888/api?filter[title][like]=${searchApiTitle}&expand=project,module`);
+    setApiData(response.data.items);
   };
 
   const deleteApiHandler = async (apiId) => {
     await axios
-      .delete(`http://localhost:8080/api/delete?id=${apiId}`)
+      .delete(`http://localhost:8888/api/delete?id=${apiId}`)
       .then(() => {
         console.log("DELETE Successfully");
       });
-    window.location.reload(true);
+    loadApiData();
   };
 
   const editApiHandler = (apiId) => {
@@ -58,19 +69,6 @@ const Api = () => {
   return (
     <div className="container">
       <h1 className="text-center"> Add New API</h1>
-      <table className="table">
-        <thead>
-          <th>API URL</th>
-          <th>API Title</th>
-          <th>API Description</th>
-          <th>Project</th>
-          <th>Module</th>
-          <th>Method</th>
-          <th>Request</th>
-          <th>Response</th>
-        </thead>
-        {searchResult}
-      </table>
       <Input
         label="Search"
         input={{
@@ -107,7 +105,7 @@ const Api = () => {
           <ApiService
             onApiDelete={deleteApiHandler}
             onApiEdit={editApiHandler}
-            apiData={apiData}
+            apiData={currentApis}
           ></ApiService>
         }
       </table>
@@ -116,8 +114,13 @@ const Api = () => {
         settrigger={setButtonPopup}
         title="Add Api"
       >
-        <ApiForm></ApiForm>
+        <ApiForm addApi = {submitApiHandler}></ApiForm>
       </PopupModal>
+      <Pagination
+                dataPerPage={apisPerPage}
+                totalData={apiData.length}
+                paginate={paginate}
+            />
     </div>
   );
 };

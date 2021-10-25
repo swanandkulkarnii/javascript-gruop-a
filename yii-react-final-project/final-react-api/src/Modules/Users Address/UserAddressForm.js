@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Input from "../../Shared/UI/Input/Input";
 
+
 const UserAddressForm = () => {
   const [addressOne, setAddressOne] = useState("");
   const [addressTwo, setAddressTwo] = useState("");
@@ -8,6 +9,7 @@ const UserAddressForm = () => {
   const [state, setState] = useState("");
   const [pincode, setPincode] = useState("");
   const [country, setCountry] = useState("");
+
 
   const addressOneHandler = (event) => {
     setAddressOne(event.target.value);
@@ -61,7 +63,7 @@ const UserAddressForm = () => {
       alert("Please enter all Address Data");
     }
   };
-
+   
   return (
     <form className="form-horizontal form-popup" id="UserAddressForm">
       <Input
@@ -136,6 +138,7 @@ const UserAddressForm = () => {
       >
         Add User Address
       </button>
+      
     </form>
   );
 };

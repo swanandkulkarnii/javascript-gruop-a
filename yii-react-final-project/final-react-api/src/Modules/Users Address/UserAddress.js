@@ -42,13 +42,12 @@ const UserAddress = (props) => {
   var removeByAttr = function (arr, attr, value) {
     var i = arr.length;
     while (i--) {
-      console.log(arr + attr + value);
+      console.log(arr+attr+value);
       console.log("While Executed!!!");
       if (
         arr[i] &&
         arr[i].hasOwnProperty(attr) &&
-        arguments.length > 2 &&
-        arr[i][attr] === value
+        (arguments.length > 2 && arr[i][attr] === value)
       ) {
         console.log("If Executed!!!");
         arr.splice(i, 1);
@@ -96,12 +95,12 @@ const UserAddress = (props) => {
         <br />
         <button
           type="button"
-          className="btn btn-outline-secondary"
+          className="btn btn-primary"
           onClick={() => setButtonPopup(true)}
         >
           Add New User Address
         </button>
-        <table className="table table-success table-striped">
+        <table className="table">
           <thead>
             <th>Address Line One</th>
             <th>Address Line Two</th>
