@@ -4,41 +4,42 @@ import Edit from "../../Shared/UI/Buttons/Edit";
 import Td from "../../Shared/UI/Table/Td";
 //import Users from "./Userpop";
 const UsersService = (props) => {
-  const database = JSON.parse(localStorage.getItem("Users"));
-
-  if (database !== null) {
+  if (props.database !== null) {
     return (
       <tbody>
-        {database.map((value, index) => {
-          return (
-            <tr key={index}>
-              <Td data={value.firstName}></Td>
-              <Td data={value.lastName}></Td>
-              <Td data={value.gender}></Td>
-              <Td data={value.userEmail}></Td>
+        {props.database.map((value, index) => {
+          if (value.is_deleted === 0) {
+            return (
+              <tr key={index}>
+                <Td data={value.firstname}></Td>
+                <Td data={value.lastname}></Td>
+                <Td data={value.gender}></Td>
+                <Td data={value.email_id}></Td>
+                <Td data={value.pro_pic}></Td>
 
-              <Td>
-                <Edit
-                  other={{
-                    onClick: () => {
-                      props.onEdit(value.uid);
-                    },
-                  }}
-                  buttonName="Edit"
-                ></Edit>
-              </Td>
-              <Td>
-                <Delete
-                  other={{
-                    onClick: () => {
-                      props.onDelete(value.uid);
-                    },
-                  }}
-                  buttonName="Delete"
-                ></Delete>
-              </Td>
-            </tr>
-          );
+                <Td>
+                  <Edit
+                    other={{
+                      onClick: () => {
+                        props.onEdit(value.id);
+                      },
+                    }}
+                    buttonName="Edit"
+                  ></Edit>
+                </Td>
+                <Td>
+                  <Delete
+                    other={{
+                      onClick: () => {
+                        props.onDelete(value.id);
+                      },
+                    }}
+                    buttonName="Delete"
+                  ></Delete>
+                </Td>
+              </tr>
+            );
+          }
         })}
       </tbody>
     );
