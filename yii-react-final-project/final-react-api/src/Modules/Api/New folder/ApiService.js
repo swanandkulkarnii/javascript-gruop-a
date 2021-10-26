@@ -7,6 +7,7 @@ const ApiService = (props) => {
     return (
       <tbody>
         {props.apiData.map((value, index) => {
+          console.log(props.apiData.value);
           return (
             <tr key={index}>
               <Td data={value.url}></Td>
