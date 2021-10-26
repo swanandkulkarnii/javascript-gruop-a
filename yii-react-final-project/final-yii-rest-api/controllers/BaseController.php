@@ -7,6 +7,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
+use yii\data\ActiveDataProvider;
 
 class BaseController extends ActiveController
 {
@@ -20,6 +21,7 @@ class BaseController extends ActiveController
     {
         return [
             'index' => ['GET', 'HEAD'],
+            'read' => ['GET', 'HEAD', 'OPTIONS'],
             'view' => ['GET', 'HEAD'],
             'create' => ['POST', 'OPTIONS'],
             'update' => ['PUT', 'PATCH', 'OPTIONS'],
@@ -48,12 +50,63 @@ class BaseController extends ActiveController
             'class' => VerbFilter::className(),
             'actions' => [
                 'index' => ['GET'],
+                'read' => ['GET'],
                 'create' => ['POST', 'OPTIONS'],
-                'update' => ['PUT'],
+                'update' => ['PUT', 'OPTIONS'],
                 'delete' => ['DELETE'],
                 'test' => ['OPTIONS', 'POST'],
             ],
         ];
         return $behaviors;
     }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+
+        $actions['index']['dataFilter'] = [
+            'class' => \yii\data\ActiveDataFilter::class,
+            'searchModel' => $this->modelClass,
+        ];
+        return $actions;
+
+        //unset($actions['index']);
+
+        // 'prepareDataProvider' => function ($actions, $filter) {
+        //     $model = new $this->modelClass;
+        //     $query = $model::find();
+        //     if (!empty($filter)) {
+        //         $query->andWhere($filter);
+        //     }
+
+        //     $dataProvider = new ActiveDataProvider([
+        //         'query' => $query,
+
+        //     ]);
+        //     return $dataProvider;
+        // }
+    }
+
+    // public function actionIndex()
+    // {
+
+    //     $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+    //     return $actions;
+    // }
+
+    public function actionRead()
+    {
+        $activeData = new ActiveDataProvider([
+            'query' => $this->modelClass::find()->where(['is_delete' => 0]),
+        ]);
+        return $activeData;
+    }
+    // public function prepareDataProvider()
+    // {
+
+    //     $activeData = new ActiveDataProvider([
+    //         'query' => $this->modelClass::find()->where(['is_delete' => 0]),
+    //     ]);
+    //     return $activeData;
+    // }
 }
