@@ -7,19 +7,20 @@ use Yii;
 /**
  * This is the model class for table "users".
  *
- * @property int $user_id
- * @property string $first_name
- * @property string $last_name
- * @property string $email
- * @property string $profile_pic
+ * @property int $id
+ * @property string $firstname
+ * @property string $lastname
  * @property string $gender
+ * @property string $email_id
+ * @property string|null $pro_pic
  * @property string $created_at
- *
- * @property Useraddress[] $useraddresses
+ * @property int|null $is_deleted
  */
 class Users extends \yii\db\ActiveRecord
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'users';
@@ -31,11 +32,10 @@ class Users extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['is_delete'], 'integer'],
-            [['first_name', 'last_name', 'email', 'profile_pic', 'gender'], 'required'],
-            [['profile_pic'], 'string'],
+            [['firstname', 'lastname', 'gender', 'email_id'], 'required'],
             [['created_at'], 'safe'],
-            [['first_name', 'last_name', 'email', 'gender'], 'string', 'max' => 255],
+            [[ 'is_deleted'], 'integer'],
+            [['firstname', 'lastname', 'gender', 'email_id', 'pro_pic'], 'string', 'max' => 255],
         ];
     }
 
@@ -45,24 +45,14 @@ class Users extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'user_id' => 'User ID',
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
-            'email' => 'Email',
-            'profile_pic' => 'Profile Pic',
+            'id' => 'ID',
+            'firstname' => 'Firstname',
+            'lastname' => 'Lastname',
             'gender' => 'Gender',
-            'is_delete' => 'Is Delete',
+            'email_id' => 'Email ID',
+            'pro_pic' => 'Pro Pic',
             'created_at' => 'Created At',
+            'is_deleted' => 'Is Deleted',
         ];
-    }
-
-    /**
-     * Gets query for [[Useraddresses]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUseraddresses()
-    {
-        return $this->hasMany(Useraddress::className(), ['user_id' => 'user_id']);
     }
 }
