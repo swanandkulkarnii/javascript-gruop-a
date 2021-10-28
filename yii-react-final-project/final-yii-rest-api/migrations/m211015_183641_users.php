@@ -13,14 +13,14 @@ class m211015_183641_users extends Migration
     public function safeUp()
     {
         $this->createTable('users',[
-            'user_id' => $this->primaryKey(),
-            'first_name' => $this->string(255)->notNull(),
-            'last_name' => $this->string(255)->notNull(),
-            'email' => $this->string(255)->notNull(),
-            'profile_pic' => $this->text()->notNull(),
-            'gender' => $this->string(255)->notNull(),
-            'is_delete' => $this->integer()->defaultValue(0),
-            'created_at' => $this->timestamp()
+           'id'=> $this->primaryKey(),
+            'firstname' => $this->string()->notNull(),
+            'lastname'  => $this->string()->notNull(),
+            'gender' => $this->string()->notNull(),
+            'email_id'=> $this->string()->notNull(),
+            'pro_pic' => $this->string(),
+            'created_at' => $this->timestamp(),
+            'is_deleted' => $this->integer()->defaultExpression('0'),
         ]);
     }
 
