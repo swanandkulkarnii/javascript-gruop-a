@@ -4,7 +4,7 @@ import Input from "../../Shared/UI/Input/Input";
 import { ApiMethod } from "./ApiMethod";
 import { ApiRequest } from "./ApiRequest";
 import { ApiResponse } from "./ApiResponse";
-
+import { AiOutlinePlus,AiTwotoneEdit } from "react-icons/ai";
 const ApiForm = (props) => {
   const [apiProjectId, setApiProjectId] = useState();
   const [apiModuleId, setModuleId] = useState();
@@ -16,7 +16,7 @@ const ApiForm = (props) => {
   const [apiResponse, setApiResponse] = useState();
   const [projectData, setProjectData] = useState([]);
   const [moduleData, setModuleData] = useState([]);
-  const [apiId, setApiId] = useState();
+  const [apiId, setApiId] =useState();
 
   const apiProjectHandler = (event) => {
     setApiProjectId(event.target.value);
@@ -57,65 +57,31 @@ const ApiForm = (props) => {
       .then((res) => setProjectData(res.data.items));
   }, []);
   useEffect(async () => {
-    if (props.isEdit.isEdit) {
-      await axios
-        .get(`http://localhost:8888/api/view?id=${props.isEdit.api_id}`)
-        .then((res) => {
-          setApiId(res.data.api_id);
-          setApiProjectId(res.data.project_id);
-          setModuleId(res.data.module_id);
-          setApiUrl(res.data.url);
-          setApiTitle(res.data.title);
-          setApiDesc(res.data.description);
-          setApiMethod(res.data.method);
-          setApiRequest(res.data.request);
-          setApiResponse(res.data.response);
+    if(props.isEdit.isEdit)
+    {
+        await axios.get(`http://localhost:8888/api/view?id=${props.isEdit.api_id}`)
+        .then(res => {
+            setApiId(res.data.api_id)
+            setApiProjectId(res.data.project_id);
+            setModuleId(res.data.module_id);
+            setApiUrl(res.data.url);
+            setApiTitle(res.data.title);
+            setApiDesc(res.data.description);
+            setApiMethod(res.data.method);
+            setApiRequest(res.data.request);
+            setApiResponse(res.data.response);
         });
     }
-  }, []);
-  let button;
-  if (props.isEdit.isEdit) {
-    button = (
-      <button
-        className="btn btn-success mt-5"
-        onClick={() => {
-          props.updateApi(
-            apiId,
-            apiProjectId,
-            apiModuleId,
-            apiTitle,
-            apiDesc,
-            apiUrl,
-            apiMethod,
-            apiRequest,
-            apiResponse
-          );
-        }}
-      >
-        Update API
-      </button>
-    );
-  } else {
-    button = (
-      <button
-        className="btn btn-success mt-5"
-        onClick={() => {
-          props.addApi(
-            apiProjectId,
-            apiModuleId,
-            apiTitle,
-            apiDesc,
-            apiUrl,
-            apiMethod,
-            apiRequest,
-            apiResponse
-          );
-        }}
-      >
-        Add API
-      </button>
-    );
-  }
+}, []);
+let button;
+if(props.isEdit.isEdit)
+{
+    button = <button className="btn btn-success my-5s" onClick={()=>{props.updateApi(apiId,apiProjectId,apiModuleId,apiTitle,apiDesc,apiUrl,apiMethod,apiRequest,apiResponse)}}><AiTwotoneEdit/> &nbsp; Update Api</button>;
+}
+else
+{
+    button = <button className="btn btn-success my-5" onClick={()=>{props.addApi(apiProjectId,apiModuleId,apiTitle,apiDesc,apiUrl,apiMethod,apiRequest,apiResponse)}}> <AiOutlinePlus/> &nbsp; Add Api</button>
+}
 
   return (
     <>

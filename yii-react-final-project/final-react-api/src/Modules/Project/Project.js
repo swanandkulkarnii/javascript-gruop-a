@@ -3,23 +3,34 @@ import PopupModal from '../../Shared/UI/PopupModal/PopupModal';
 import Input from '../../Shared/UI/Input/Input';
 import ProjectForm from './ProjectForm';
 import ProjectService from './ProjectService';
-import axios from 'axios';
+import { getProjectData, deleteProject, addProject, projectSearch, editProject } from '../../Shared/Services/Project-Services';
+
 import Pagination from '../../Shared/UI/Pagination/Pagination';
 import Add from '../../Shared/UI/Buttons/Add';
 const Project = () => {
     const [project_data, setProjectData] = useState([]);
-    const [editProjectData, setEditProjectData] = useState({isEdit:false,project_id:''});
     const [buttonPopup, setButtonPopup] = useState(false);
+    
+    //getting search value from user 
     const [searchProjectTitle, setSearchProjectTitle] = useState('');
+    
     //Pagination Variables 
     const [currentPage, setCurrentPage] = useState(1);
     const [projectsPerPage] = useState(8);
+    
+    //from User we check user Clicked on Edit Button & set project_id 
+    const [editProjectData, setEditProjectData] = useState({isEdit:false,project_id:''});
+    
+    //Display All Project Data In Grid View 
     useEffect(()=>{
         loadProjectData()
     },[]);
     const loadProjectData = async() => {
-        await axios.get("http://localhost:8888/project/read").then(res => setProjectData(res.data.items));
+        const res = await getProjectData();
+        setProjectData(res.data.items);
     }
+
+
     //Pagination Logic
     const indexOfLastProject = currentPage * projectsPerPage;
     const indexOfFirstProject = indexOfLastProject - projectsPerPage;
@@ -28,16 +39,14 @@ const Project = () => {
         indexOfLastProject
     );
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+    
+    //Create A Project
     async function submitProjectHandler(projTitle,projDesc){
         if(projTitle!=='' && projDesc!=='')
         {
             setButtonPopup(false);
             setEditProjectData(true);
-            await axios.post('http://localhost:8888/project/create',{
-                "title":projTitle,
-                "description":projDesc
-            });
+            const data = await addProject(projTitle,projDesc);
             loadProjectData();
         }
         else{
@@ -46,13 +55,12 @@ const Project = () => {
     }
     const searchProjectTitleHandler = async (event) =>{
         setSearchProjectTitle(event.target.value);
-        const response = await axios.get(`http://localhost:8888/project?filter[title][like]=${searchProjectTitle}`);
+        const response = await projectSearch(searchProjectTitle);
         setProjectData(response.data.items);
     }
+
     const deleteHandler = async (pid) =>{
-        await axios.put(`http://localhost:8888/project/update?id=${pid}`,{'is_delete':1}).then(()=>{
-            console.log("DELETE Successfully");
-        });
+        const data = await deleteProject(pid);
         loadProjectData();
     }
     const editHandler = async (pid) =>{
@@ -61,8 +69,7 @@ const Project = () => {
     }
     const updateProjectHandler = async(projId,projTitle,projDesc) =>{
         setButtonPopup(false);
-        await axios.put(`http://localhost:8888/project/update?id=${projId}`,
-        {"title":projTitle,"description":projDesc}).then(()=>{console.log("Updated Successfully")});
+        const data = await editProject(projId,projTitle,projDesc);
         loadProjectData();
     }
     return (

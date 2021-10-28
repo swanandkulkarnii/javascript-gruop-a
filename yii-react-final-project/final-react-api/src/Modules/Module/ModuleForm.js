@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Input from '../../Shared/UI/Input/Input';
-
+import { AiOutlinePlus, AiTwotoneEdit } from "react-icons/ai";
 const ModuleForm = (props) => {
     const [database, setProjectData] = useState([]);
     const [projectId, setProjectId] = useState();
@@ -12,9 +12,9 @@ const ModuleForm = (props) => {
         axios.get("http://localhost:8888/project/read").then(res => setProjectData(res.data.items));
     });
     useEffect(async () => {
-        if(props.isEdit.isEdit)
+        if(props.onEdit.isEdit)
         {
-            await axios.get(`http://localhost:8888/modules/view?id=${props.isEdit.module_id}`)
+            await axios.get(`http://localhost:8888/modules/view?id=${props.onEdit.module_id}`)
             .then(res =>{
                 setModuleId(res.data.module_id);
                 setProjectId(res.data.project_id);
@@ -24,13 +24,13 @@ const ModuleForm = (props) => {
         }
     }, []);
     let button;
-    if(props.isEdit.isEdit)
+    if(props.onEdit.isEdit)
     {
-        button = <button className="btn btn-success mt-5" onClick={()=>{props.updateModules(moduleId,projectId,moduleTitle,moduleDesc)}}>Update Modules</button>;
+        button = <button className="btn btn-success my-5" onClick={()=>{props.updateModules(moduleId,projectId,moduleTitle,moduleDesc)}}><AiTwotoneEdit/>Update Modules</button>;
     }
     else
     {
-        button = <button className="btn btn-success mt-5" onClick={()=>{props.addModule(projectId,moduleTitle,moduleDesc)}}>Add Modules</button>
+        button = <button className="btn btn-success my-5" onClick={()=>{props.addModule(projectId,moduleTitle,moduleDesc)}}> <AiOutlinePlus /> &nbsp; Add Modules</button>
     }
     const projectVal = (event) =>{
         setProjectId(event.target.value);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Input from '../../Shared/UI/Input/Input';
 import axios from 'axios';
+import { AiOutlinePlus, AiTwotoneEdit } from "react-icons/ai";
 const ProjectForm = (props) => {
     const [projId, setProjId] = useState(''); 
     const [projTitle, setProjTitle] = useState('');
@@ -22,17 +23,16 @@ const ProjectForm = (props) => {
                 setProjTitle(res.data.title);
                 setProjDesc(res.data.description);
             });
-            
         }
     }, []);
     let button;
     if(props.isEdit.isEdit)
     {
-        button = <button className="btn btn-success mt-5" onClick={()=>{props.updateProject(projId,projTitle,projDesc)}}>Update Project</button>;
+        button = <button className="btn btn-success my-5" onClick={()=>{props.updateProject(projId,projTitle,projDesc)}}><AiTwotoneEdit/> &nbsp; Update Project</button>;
     }
     else
     {
-        button = <button className="btn btn-success mt-5" onClick={()=>{props.addProject(projTitle,projDesc)}}>Add Project</button>
+        button = <button className="btn btn-success my-5" onClick={()=>{props.addProject(projTitle,projDesc)}}><AiOutlinePlus/> &nbsp; Add Project</button>
     }
     return (
         <>

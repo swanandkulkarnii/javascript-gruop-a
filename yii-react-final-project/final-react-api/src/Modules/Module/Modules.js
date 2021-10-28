@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PopupModal from '../../Shared/UI/PopupModal/PopupModal';
 import ModuleService from './ModuleService';
+import { deleteModules, getModulesData, addModules, moduleSearch, editModule } from '../../Shared/Services/Modules-Services';
 import ModuleForm from './ModuleForm';
 import Input from '../../Shared/UI/Input/Input';
 import Add from '../../Shared/UI/Buttons/Add';
@@ -17,7 +18,8 @@ const Modules = () => {
         loadModuleData();
     },[]);
     const loadModuleData = async () =>{
-        await axios.get("http://localhost:8888/modules/read?expand=project").then(res => setModulesData(res.data.items));
+        const res = await getModulesData();
+        setModulesData(res.data.items);
     }
     const indexOfLastModules = currentPage * modulesPerPage;
     const indexOfFirstModules = indexOfLastModules - modulesPerPage;
@@ -30,11 +32,7 @@ const Modules = () => {
         if(projectId!=='' && moduleTitle!=='' && moduleDesc!=='')
         {
             setButtonPopup(false);
-            await axios.post('http://localhost:8888/modules/create',{
-                "project_id":projectId,
-                "title":moduleTitle,
-                "description":moduleDesc,
-            });
+            const data = await addModules(projectId, moduleTitle, moduleDesc);
             loadModuleData();
         }
         else{
@@ -43,14 +41,12 @@ const Modules = () => {
     }
     const searchModuleTitleHandler = async(event) =>{
         setSearchModuleTitle(event.target.value);
-        const response = await axios.get(`http://localhost:8888/modules?filter[project_title][like]=${searchModuleTitle}&expand=project`);
+        const response = await moduleSearch(searchModuleTitle);
         setModulesData(response.data.items);
     };
 
     const deleteModuleHandler = async(mid) =>{
-        await axios.put(`http://localhost:8888/modules/update?id=${mid}`,{'is_delete':1}).then(()=>{
-            console.log("DELETE Successfully");
-        });
+        const data = await deleteModules(mid);
         loadModuleData();
     }
     const editModuleHandler = async (mid) =>{
@@ -59,8 +55,7 @@ const Modules = () => {
     }
     const updateModulesHandler = async(moduleId,projId,moduleTitle,moduleDesc) =>{
         setButtonPopup(false);
-        await axios.put(`http://localhost:8888/modules/update?id=${moduleId}`,
-        {"project_id":projId,"title":moduleTitle,"description":moduleDesc}).then(()=>{console.log("Updated Successfully")});
+        const data = await editModule(moduleId,projId,moduleTitle,moduleDesc);
         loadModuleData();
     }
     return (
@@ -100,7 +95,7 @@ const Modules = () => {
                 settrigger={setButtonPopup}
                 title = "Add Module"
             >
-                <ModuleForm addModule={submitModuleHandler} updateModules={updateModulesHandler} isEdit={editModuleData}></ModuleForm>
+                <ModuleForm addModule={submitModuleHandler} updateModules={updateModulesHandler} onEdit={editModuleData}></ModuleForm>
             </PopupModal>
             <Pagination
                 dataPerPage={modulesPerPage}
@@ -111,4 +106,4 @@ const Modules = () => {
     )
 }
 
-export default Modules
+export default Modules;
