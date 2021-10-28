@@ -20,6 +20,8 @@ const Api = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [apisPerPage] = useState(2);
   const [editApiData, setEditApiData] = useState({ isEdit: false, api_id: "" });
+  const [sortStatus, setSortStatus] = useState(true);
+
   useEffect(() => {
     loadApiData();
   }, []);
@@ -27,10 +29,30 @@ const Api = () => {
     const res = await getApiData();
     setApiData(res.data.items);
   };
+
+  // Pagination Current Page
   const indexOfLastApis = currentPage * apisPerPage;
   const indexOfFirstApis = indexOfLastApis - apisPerPage;
   const currentApis = apiData.slice(indexOfFirstApis, indexOfLastApis);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Sort Modules
+  const handleSort = () => {
+    const data = apiData;
+    if (sortStatus == true) {
+      let sorted = data.sort((a, b) => a.title.localeCompare(b.title));
+      setApiData(sorted);
+
+      setSortStatus(!sortStatus);
+    } else {
+      let sorted = data.sort((a, b) => b.title.localeCompare(a.title));
+      console.log("rev - sorted-----", sorted);
+      setApiData(sorted);
+
+      setSortStatus(!sortStatus);
+    }
+  };
+
   const submitApiHandler = async (
     apiProjectId,
     apiModuleId,
@@ -116,6 +138,14 @@ const Api = () => {
   return (
     <div className="container">
       <h1 className="text-center"> Add New API</h1>
+      <button
+        type="button"
+        className="btn btn-warning"
+        style={{ color: "white" }}
+        onClick={handleSort}
+      >
+        Sort By Title
+      </button>
       <Input
         label="Search"
         input={{
