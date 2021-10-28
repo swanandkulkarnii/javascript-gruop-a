@@ -13,18 +13,29 @@ import Input from "../../Shared/UI/Input/Input";
 import Add from "../../Shared/UI/Buttons/Add";
 import axios from "axios";
 import Pagination from "../../Shared/UI/Pagination/Pagination";
+
 const Modules = () => {
+  // Set State for Module Data
   const [moduleData, setModulesData] = useState([]);
   const [buttonPopup, setButtonPopup] = useState(false);
+
+  // Set Set State for Search Module Title Variable
   const [searchModuleTitle, setSearchModuleTitle] = useState("");
+
+  // Set State for Pagination Variables
   const [currentPage, setCurrentPage] = useState(1);
   const [modulesPerPage] = useState(2);
+
+  // Set State for Edit Module Variable
   const [editModuleData, setEditModuleData] = useState({
     isEdit: false,
     module_id: "",
   });
+
+  // Set State for Sort Module Variable
   const [sortStatus, setSortStatus] = useState(true);
 
+  // Load Module Data
   useEffect(() => {
     loadModuleData();
   }, []);
@@ -32,6 +43,8 @@ const Modules = () => {
     const res = await getModulesData();
     setModulesData(res.data.items);
   };
+
+  // Pagination
   const indexOfLastModules = currentPage * modulesPerPage;
   const indexOfFirstModules = indexOfLastModules - modulesPerPage;
   const currentModules = moduleData.slice(
@@ -57,6 +70,7 @@ const Modules = () => {
     }
   };
 
+  // Submit Handler
   const submitModuleHandler = async (projectId, moduleTitle, moduleDesc) => {
     if (projectId !== "" && moduleTitle !== "" && moduleDesc !== "") {
       setButtonPopup(false);
@@ -66,21 +80,26 @@ const Modules = () => {
       alert("Please Fill All Fields");
     }
   };
+
+  // Search Module by Title
   const searchModuleTitleHandler = async (event) => {
     setSearchModuleTitle(event.target.value);
     const response = await moduleSearch(searchModuleTitle);
     setModulesData(response.data.items);
   };
 
+  // Delete Module
   const deleteModuleHandler = async (mid) => {
     const confirm = window.confirm(
-      "Are you sure you wish to delete this user?"
+      "Are you sure you wish to delete this module?"
     );
     if (confirm === true) {
       const data = await deleteModules(mid);
       loadModuleData();
     }
   };
+
+  // Edit Module
   const editModuleHandler = async (mid) => {
     setEditModuleData({ isEdit: true, module_id: mid });
     setButtonPopup(true);
@@ -95,6 +114,7 @@ const Modules = () => {
     const data = await editModule(moduleId, projId, moduleTitle, moduleDesc);
     loadModuleData();
   };
+
   return (
     <div className="container">
       <h1 className="text-center"> Add New Modules</h1>
