@@ -4,7 +4,7 @@ use app\models\Users;
 class UsersResource extends Users{
     public function fields()
     {
-        return ['user_id','first_name','last_name','email','profile_pic','gender'];
+        return ['id','firstname','lastname','gender','email_id','pro_pic'];
     }
     
     public function extraFields()
