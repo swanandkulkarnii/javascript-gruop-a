@@ -11,7 +11,7 @@ const Project = () => {
     const [project_data, setProjectData] = useState([]);
     const [buttonPopup, setButtonPopup] = useState(false);
     
-    //getting search value from user 
+    //getting search value from user
     const [searchProjectTitle, setSearchProjectTitle] = useState('');
     
     //Pagination Variables 
@@ -60,8 +60,12 @@ const Project = () => {
     }
 
     const deleteHandler = async (pid) =>{
-        const data = await deleteProject(pid);
-        loadProjectData();
+        const confirm = window.confirm("Are you sure you wish to delete this Project?");
+        if (confirm === true) 
+        {
+            const data = await deleteProject(pid);
+            loadProjectData();
+        }
     }
     const editHandler = async (pid) =>{
         setEditProjectData({isEdit:true,project_id:pid});
