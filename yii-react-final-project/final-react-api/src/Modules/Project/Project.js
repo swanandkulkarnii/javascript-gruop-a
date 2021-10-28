@@ -10,27 +10,31 @@ import {
   projectSearch,
   editProject,
 } from "../../Shared/Services/Project-Services";
-
 import Pagination from "../../Shared/UI/Pagination/Pagination";
 import Add from "../../Shared/UI/Buttons/Add";
+
 const Project = () => {
-  const [project_data, setProjectData] = useState([]);
+  // Set State for Project Data
+  const [projectData, setProjectData] = useState([]);
   const [buttonPopup, setButtonPopup] = useState(false);
 
-  //getting search value from user
+  // Set Set State for Search Project Title Variable
   const [searchProjectTitle, setSearchProjectTitle] = useState("");
 
-  //Pagination Variables
+  // Set State for Pagination Variables
   const [currentPage, setCurrentPage] = useState(1);
   const [projectsPerPage] = useState(2);
 
-  //from User we check user Clicked on Edit Button & set project_id
+  // Set State for Edit Project Variable
   const [editProjectData, setEditProjectData] = useState({
     isEdit: false,
     project_id: "",
   });
 
-  //Display All Project Data In Grid View
+  // Set State for Sort Project Variable
+  const [sortStatus, setSortStatus] = useState(true);
+
+  //Load Project Data
   useEffect(() => {
     loadProjectData();
   }, []);
@@ -39,24 +43,20 @@ const Project = () => {
     setProjectData(res.data.items);
   };
 
-  //Pagination Logic
+  //Pagination
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const currentProjects = project_data.slice(
+  const currentProjects = projectData.slice(
     indexOfFirstProject,
     indexOfLastProject
   );
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Sort
-
-  const [sortStatus, setSortStatus] = useState(true);
-
   // Sort Projects
   const handleSort = () => {
-    const data = project_data;
+    const data = projectData;
 
-    if (sortStatus == true) {
+    if (sortStatus) {
       let sorted = data.sort((a, b) => a.title.localeCompare(b.title));
 
       setProjectData(sorted);
@@ -80,21 +80,26 @@ const Project = () => {
       alert("Please Fill All Fields");
     }
   }
+
+  // Search Project by Title
   const searchProjectTitleHandler = async (event) => {
     setSearchProjectTitle(event.target.value);
     const response = await projectSearch(searchProjectTitle);
     setProjectData(response.data.items);
   };
 
+  // Delete Project
   const deleteHandler = async (pid) => {
     const confirm = window.confirm(
-      "Are you sure you wish to delete this user?"
+      "Are you sure you wish to delete this project?"
     );
     if (confirm === true) {
       const data = await deleteProject(pid);
       loadProjectData();
     }
   };
+
+  // Edit Project
   const editHandler = async (pid) => {
     setEditProjectData({ isEdit: true, project_id: pid });
     setButtonPopup(true);
@@ -108,6 +113,7 @@ const Project = () => {
   return (
     <div className="container">
       <h1 className="text-center"> Add New Projects</h1>
+
       <button
         type="button"
         className="btn btn-warning"
@@ -164,7 +170,7 @@ const Project = () => {
       </PopupModal>
       <Pagination
         dataPerPage={projectsPerPage}
-        totalData={project_data.length}
+        totalData={projectData.length}
         paginate={paginate}
       />
     </div>
