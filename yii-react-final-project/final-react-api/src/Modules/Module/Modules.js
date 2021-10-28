@@ -46,8 +46,12 @@ const Modules = () => {
     };
 
     const deleteModuleHandler = async(mid) =>{
-        const data = await deleteModules(mid);
-        loadModuleData();
+        const confirm = window.confirm("Are you sure you wish to delete this user?");
+        if (confirm === true) 
+        {
+            const data = await deleteModules(mid);
+            loadModuleData();
+        }
     }
     const editModuleHandler = async (mid) =>{
         setEditModuleData({isEdit:true,module_id:mid});
