@@ -11,17 +11,27 @@ import {
 import ApiForm from "./ApiForm";
 import Input from "../../Shared/UI/Input/Input";
 import Add from "../../Shared/UI/Buttons/Add";
-import axios from "axios";
 import Pagination from "../../Shared/UI/Pagination/Pagination";
+
 const Api = () => {
-  const [buttonPopup, setButtonPopup] = useState(false);
-  const [searchApiTitle, setSearchApiTitle] = useState("");
+  // Set State for Api Data
   const [apiData, setApiData] = useState([]);
+  const [buttonPopup, setButtonPopup] = useState(false);
+
+  // Set Set State for Search Api Title Variable
+  const [searchApiTitle, setSearchApiTitle] = useState("");
+
+  // Set State for Pagination Variables
   const [currentPage, setCurrentPage] = useState(1);
   const [apisPerPage] = useState(2);
+
+  // Set State for Edit Api Variable
   const [editApiData, setEditApiData] = useState({ isEdit: false, api_id: "" });
+
+  // Set State for Sort Api Variable
   const [sortStatus, setSortStatus] = useState(true);
 
+  // Load Api Data
   useEffect(() => {
     loadApiData();
   }, []);
@@ -30,7 +40,7 @@ const Api = () => {
     setApiData(res.data.items);
   };
 
-  // Pagination Current Page
+  // Pagination
   const indexOfLastApis = currentPage * apisPerPage;
   const indexOfFirstApis = indexOfLastApis - apisPerPage;
   const currentApis = apiData.slice(indexOfFirstApis, indexOfLastApis);
@@ -53,6 +63,7 @@ const Api = () => {
     }
   };
 
+  // Submit Handler
   const submitApiHandler = async (
     apiProjectId,
     apiModuleId,
@@ -90,22 +101,23 @@ const Api = () => {
     }
   };
 
+  // Search Api by Title
   const searchApiTitleHandler = async (event) => {
     setSearchApiTitle(event.target.value);
     const response = await searchApi(searchApiTitle);
     setApiData(response.data.items);
   };
 
+  // Delete Api
   const deleteApiHandler = async (apiId) => {
-    const confirm = window.confirm(
-      "Are you sure you wish to delete this user?"
-    );
+    const confirm = window.confirm("Are you sure you wish to delete this api?");
     if (confirm === true) {
       const data = await deleteApi(apiId);
       loadApiData();
     }
   };
 
+  // Edit Api
   const editApiHandler = (apiId) => {
     setEditApiData({ isEdit: true, api_id: apiId });
     setButtonPopup(true);
@@ -135,6 +147,7 @@ const Api = () => {
     );
     loadApiData();
   };
+
   return (
     <div className="container">
       <h1 className="text-center"> Add New API</h1>
