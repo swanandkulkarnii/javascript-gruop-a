@@ -6,13 +6,14 @@ import PopupModal from "../../Shared/UI/PopupModal/PopupModal";
 import Input from "../../Shared/UI/Input/Input";
 import axios from "axios";
 import Pagination from "../../Shared/UI/Pagination/Pagination";
+import Add from "../../Shared/UI/Buttons/Add";
 
 const User = () => {
   const [usersdata, setusersdata] = useState([]);
   const [buttonPopup, setButtonPopup] = useState(false);
   const [searchFirstName, setSearchFirstName] = useState("");
-  const [searchResult, setSearchResult] = useState("");
-  //const [delete1, setDelete1] = useState(false);
+  const [editUserData, setEditUserData] = useState(false);
+  //pagination variable
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(2);
 
@@ -31,46 +32,9 @@ const User = () => {
   }, []);
   const loadUserData = async () => {
     await axios
-      .get("http://localhost/Yii/api_final/web/users")
+      .get("http://localhost/Yii/api_final/web/users/read")
       .then((res) => setusersdata(res.data.items));
   };
-
-  // const searchFirtsNameHandler = (event) => {
-  //   setSearchFirstName(event.target.value);
-  //   var user_data = JSON.parse(localStorage.getItem("Users"));
-  //   for (var i = 0; i < user_data.length; i++) {
-  //     if (
-  //       user_data[i].firstName
-  //         .toUpperCase()
-  //         .includes(searchFirstName.toUpperCase())
-  //     ) {
-  //       setSearchResult(
-  //         <tr>
-  //           <Td data={`${JSON.stringify(user_data[i].firstName)}`}></Td>
-  //           <Td data={`${JSON.stringify(user_data[i].lastName)}`}></Td>
-  //           <Td data={`${JSON.stringify(user_data[i].gender)}`}></Td>
-  //           <Td data={`${JSON.stringify(user_data[i].userEmail)}`}></Td>
-  //         </tr>
-  //       );
-  //     }
-  //   }
-  // };
-
-  // var removeByAttr = function (arr, attr, value) {
-  //   var i = arr.length;
-  //   while (i--) {
-  //     if (
-  //       arr[i] &&
-  //       arr[i].hasOwnProperty(attr) &&
-  //       arguments.length > 2 &&
-  //       arr[i][attr] === value
-  //     ) {
-  //       arr.splice(i, 1);
-  //     }
-  //   }
-  //   return arr;
-  // };
-
   async function submitUserHandler(
     firstName,
     lastName,
@@ -102,6 +66,16 @@ const User = () => {
     }
   }
 
+  const searchUserHandler = async (event) => {
+    setSearchFirstName(event.target.value);
+    const response = await axios.get(
+      `http://localhost/Yii/api_final/web/users?filter[firstname][like]=${searchFirstName}`
+    );
+
+    setusersdata(response.data.items);
+    //console.log(response.data.items);
+  };
+
   const deleteHandler = async (id) => {
     const confirm = window.confirm(
       "Are you sure you wish to delete this user?"
@@ -113,7 +87,7 @@ const User = () => {
           { is_deleted: 1 },
           { headers: headers }
         )
-        .then((res) => {
+        .then(() => {
           loadUserData();
         });
       // axios
@@ -123,24 +97,39 @@ const User = () => {
       //     console.log(res.data);
       //   });
     }
-
-    //window.location.reload(true);
   };
-  const editHandler = (uid) => {};
+
+  const editHandler = async (id) => {
+    setEditUserData({ isEdit: true, id: id });
+    setButtonPopup(true);
+  };
+  const updateUserHandler = async (
+    id,
+    firstName,
+    lastName,
+    gender,
+    userEmail,
+    userProfile
+  ) => {
+    setButtonPopup(false);
+    await axios
+      .put(`http://localhost/Yii/api_final/web/users/update?id=${id}`, {
+        firstname: firstName,
+        lastname: lastName,
+        gender: gender,
+        email_id: userEmail,
+        pro_pic: userProfile,
+      })
+      .then(() => {
+        console.log("Updated Successfully");
+      });
+    loadUserData();
+  };
 
   return (
     <>
-      {/* <h1 className="text-center"> USER</h1> */}
+      {<h1 className="text-center"> USER</h1>}
       <div className="container">
-        {/* <table className="table table-success table-striped">
-          <thead>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Gender</th>
-            <th>Email ID</th>
-          </thead>
-          {searchResult}
-        </table> */}
         <Input
           label="Search"
           input={{
@@ -148,18 +137,20 @@ const User = () => {
             type: "search",
             placeholder: "Enter First Name",
             name: "searchFirstName",
+            size: "20",
           }}
           value={searchFirstName}
-          //onChange={searchFirtsNameHandler}
+          onChange={searchUserHandler}
         ></Input>
-        <button
-          type="button"
-          className=" btn btn-outline-secondary"
-          onClick={() => setButtonPopup(true)}
-        >
-          Add User
-        </button>
-
+        <Add
+          other={{
+            onClick: () => {
+              setButtonPopup(true);
+              setEditUserData(false);
+            },
+          }}
+          buttonName="Add User"
+        />
         <table className="table table-success table-striped">
           <thead>
             <th>First Name</th>
@@ -178,7 +169,11 @@ const User = () => {
         </table>
       </div>
       <PopupModal trigger={buttonPopup} settrigger={setButtonPopup}>
-        <UserForm addUser={submitUserHandler}></UserForm>
+        <UserForm
+          addUser={submitUserHandler}
+          updateUser={updateUserHandler}
+          isEdit={editUserData}
+        ></UserForm>
       </PopupModal>
       <Pagination
         dataPerPage={usersPerPage}
