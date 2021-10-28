@@ -5,14 +5,15 @@ import ProjectForm from './ProjectForm';
 import ProjectService from './ProjectService';
 import axios from 'axios';
 import Pagination from '../../Shared/UI/Pagination/Pagination';
+import Add from '../../Shared/UI/Buttons/Add';
 const Project = () => {
     const [project_data, setProjectData] = useState([]);
-    const [editProjectData, setEditProjectData] = useState(false);
+    const [editProjectData, setEditProjectData] = useState({isEdit:false,project_id:''});
     const [buttonPopup, setButtonPopup] = useState(false);
     const [searchProjectTitle, setSearchProjectTitle] = useState('');
     //Pagination Variables 
     const [currentPage, setCurrentPage] = useState(1);
-    const [projectsPerPage] = useState(2);
+    const [projectsPerPage] = useState(8);
     useEffect(()=>{
         loadProjectData()
     },[]);
@@ -55,14 +56,7 @@ const Project = () => {
         loadProjectData();
     }
     const editHandler = async (pid) =>{
-        const data = [];
-        setEditProjectData(true);
-        await axios.get(`http://localhost:8888/project/view?id=${pid}`)
-        .then(res => data.push(res.data));
-        console.log(data)
-        localStorage.setItem("project_id",data[0].project_id);
-        localStorage.setItem("title",data[0].title);
-        localStorage.setItem("description",data[0].description);
+        setEditProjectData({isEdit:true,project_id:pid});
         setButtonPopup(true);
     }
     const updateProjectHandler = async(projId,projTitle,projDesc) =>{
@@ -85,16 +79,11 @@ const Project = () => {
                 value = {searchProjectTitle}
                 onChange={searchProjectTitleHandler}
             ></Input>
-            
-            <button
-                type="button"
-                className="btn btn-primary my-5"
-                onClick={() => {setButtonPopup(true); setEditProjectData(false);}}
-            >
-                Add New Project
-            </button>
-
-            <table className="table">
+            <Add
+                other = {{onClick:()=>{ setButtonPopup(true); setEditProjectData(false); }}}
+                buttonName = "Add New Project"
+            />
+            <table className="table table-secondary table-striped">
                 <thead>
                     <th>Project Title</th>
                     <th>Project Description</th>

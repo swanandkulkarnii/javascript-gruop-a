@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Input from '../../Shared/UI/Input/Input';
-
+import axios from 'axios';
 const ProjectForm = (props) => {
     const [projId, setProjId] = useState(''); 
     const [projTitle, setProjTitle] = useState('');
@@ -14,15 +14,19 @@ const ProjectForm = (props) => {
         setProjDesc(event.target.value);
     };
     useEffect(async () => {
-        if(props.isEdit)
+        if(props.isEdit.isEdit)
         {
-            setProjId(localStorage.getItem('project_id'))
-            setProjTitle(localStorage.getItem('title'));
-            setProjDesc(localStorage.getItem('description'));
+            await axios.get(`http://localhost:8888/project/view?id=${props.isEdit.project_id}`)
+            .then(res => {
+                setProjId(res.data.project_id);
+                setProjTitle(res.data.title);
+                setProjDesc(res.data.description);
+            });
+            
         }
     }, []);
     let button;
-    if(props.isEdit)
+    if(props.isEdit.isEdit)
     {
         button = <button className="btn btn-success mt-5" onClick={()=>{props.updateProject(projId,projTitle,projDesc)}}>Update Project</button>;
     }
@@ -32,7 +36,6 @@ const ProjectForm = (props) => {
     }
     return (
         <>
-        <h1>{props.pid}</h1>
                 <Input 
                     label="Project Title" 
                     input={{

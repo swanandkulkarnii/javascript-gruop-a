@@ -22,7 +22,7 @@ const ApiService = (props) => {
                 <Edit
                   other={{
                     onClick: () => {
-                      props.onApiEdit(value.id);
+                      props.onApiEdit(value.api_id);
                     },
                   }}
                   buttonName="Edit"
@@ -32,7 +32,7 @@ const ApiService = (props) => {
                 <Delete
                   other={{
                     onClick: () => {
-                      props.onApiDelete(value.id);
+                      props.onApiDelete(value.api_id);
                     },
                   }}
                   buttonName="Delete"
