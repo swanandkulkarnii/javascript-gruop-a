@@ -74,7 +74,7 @@ const User = () => {
       const res = await sort("-firstname");
       setusersdata(res.data.items);
     } else if (sortBy == "lastname ASC") {
-      const res = await sort("dlastname");
+      const res = await sort("lastname");
       setusersdata(res.data.items);
     } else if (sortBy == "lastname DESC") {
       const res = await sort("-lastname");
