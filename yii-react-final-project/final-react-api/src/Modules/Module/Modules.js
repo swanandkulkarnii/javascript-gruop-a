@@ -74,7 +74,7 @@ const Modules = () => {
 
   const deleteModuleHandler = async (mid) => {
     const confirm = window.confirm(
-      "Are you sure you wish to delete this user?"
+      "Are you sure you wish to delete this module?"
     );
     if (confirm === true) {
       const data = await deleteModules(mid);
