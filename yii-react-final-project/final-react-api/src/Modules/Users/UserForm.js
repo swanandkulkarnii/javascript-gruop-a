@@ -1,20 +1,45 @@
 import React, { useState, useEffect } from "react";
 import Input from "../../Shared/UI/Input/Input";
 import axios from "axios";
+import { AiOutlinePlus, AiTwotoneEdit } from "react-icons/ai";
+import validator from "validator";
 
 const UserForm = (props) => {
   const [userId, setUserId] = useState("");
+  //FirstName
   const [firstName, setFirstName] = useState("");
+  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+  const enteredNameIsValid = firstName.trim() !== "";
+  const FnameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
+  //LastName
   const [lastName, setLastName] = useState("");
+  const [enteredLNameTouched, setEnteredLNameTouched] = useState(false);
+  const enteredLNameIsValid = lastName.trim() !== "";
+  const LnameInputIsInvalid = !enteredLNameIsValid && enteredLNameTouched;
+  //gender
   const [gender, setGender] = useState("");
+  //email
   const [userEmail, setUserEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [enteredemailTouched, setEnteredemailTouched] = useState(false);
+  const enteredemailIsValid = userEmail.trim() !== "";
+  const emailInputIsInvalid = !enteredemailIsValid && enteredemailTouched;
+  //profile pic
   const [userProfile, setuserProfile] = useState("");
 
+  //Firstname Validation
   const firstNameHandler = (event) => {
     setFirstName(event.target.value);
   };
+  const nameInputBlurHandler = (event) => {
+    setEnteredNameTouched(true);
+  };
+  //LastName Validation
   const lastNameHandler = (event) => {
     setLastName(event.target.value);
+  };
+  const LnameInputBlurHandler = (event) => {
+    setEnteredLNameTouched(true);
   };
   const genderHandler = (event) => {
     setGender(event.target.value);
@@ -22,6 +47,11 @@ const UserForm = (props) => {
   const userEmailHandler = (event) => {
     setUserEmail(event.target.value);
   };
+
+  const EmailInputBlurHandler = (event) => {
+    setEnteredemailTouched(true);
+  };
+
   const userprofileHandler = (event) => {
     setuserProfile(event.target.value);
   };
@@ -44,7 +74,7 @@ const UserForm = (props) => {
 
   let button;
   let heading;
-  if (props.isEdit) {
+  if (props.isEdit.isEdit) {
     heading = <h1 className="text-center">Update User</h1>;
     button = (
       <button
@@ -60,6 +90,7 @@ const UserForm = (props) => {
           );
         }}
       >
+        <AiTwotoneEdit />
         Update User
       </button>
     );
@@ -72,10 +103,12 @@ const UserForm = (props) => {
           props.addUser(firstName, lastName, gender, userEmail, userProfile);
         }}
       >
+        <AiOutlinePlus />
         Add User
       </button>
     );
   }
+
   return (
     <>
       {heading}
@@ -89,9 +122,13 @@ const UserForm = (props) => {
               placeholder: "Enter First Name(required)",
               name: "firstName",
             }}
-            value={firstName}
             onChange={firstNameHandler}
+            onBlur={nameInputBlurHandler}
+            value={firstName}
           ></Input>
+          {FnameInputIsInvalid && (
+            <p className="text-danger">FirstName must not be empty.</p>
+          )}
           <Input
             label="Last Name*"
             input={{
@@ -102,8 +139,11 @@ const UserForm = (props) => {
             }}
             value={lastName}
             onChange={lastNameHandler}
+            onBlur={LnameInputBlurHandler}
           ></Input>
-
+          {LnameInputIsInvalid && (
+            <p className="text-danger">LastName must not be empty.</p>
+          )}
           <label>Gender :*</label>
           <div>
             <select
@@ -128,7 +168,12 @@ const UserForm = (props) => {
             }}
             value={userEmail}
             onChange={userEmailHandler}
+            onBlur={EmailInputBlurHandler}
           ></Input>
+          {emailError}
+          {emailInputIsInvalid && (
+            <p className="text-danger">Email must not be empty.</p>
+          )}
           <Input
             label="Profile Picture"
             input={{
@@ -148,5 +193,3 @@ const UserForm = (props) => {
 };
 
 export default UserForm;
-
-
