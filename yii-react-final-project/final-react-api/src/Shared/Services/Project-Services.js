@@ -18,3 +18,6 @@ export const editProject = (projId,projTitle,projDesc) =>{
     return http.put(`project/update?id=${projId}`,
     {"title":projTitle,"description":projDesc});
 }
+export const sort = (sortBy) =>{
+    return http.get(`project?sort=${sortBy}`);
+}

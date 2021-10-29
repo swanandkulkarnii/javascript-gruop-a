@@ -33,3 +33,6 @@ export const editAPi = (apiId,projId,moduleId,title,desc,apiUrl,apiMethod,apiReq
       "response":apiResponse
     })
 }
+export const sort = (sortBy) =>{
+    return http.get(`api?sort=${sortBy}&expand=project,module`);
+}
