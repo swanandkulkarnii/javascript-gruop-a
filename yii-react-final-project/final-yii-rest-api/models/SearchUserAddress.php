@@ -17,8 +17,8 @@ class SearchUserAddress extends UserAddress
     public function rules()
     {
         return [
-            [['address_id', 'zipcode', 'is_deleted'], 'integer'],
-            [['addressline1', 'addressline2', 'city', 'state', 'country', 'created_at', 'updated_at'], 'safe'],
+            [['address_id', 'zipcode','user_id', 'is_deleted'], 'integer'],
+            [['addressline1', 'addressline2', 'city', 'state', 'country', 'created_at'], 'safe'],
         ];
     }
 
@@ -61,7 +61,7 @@ class SearchUserAddress extends UserAddress
             'address_id' => $this->address_id,
             'zipcode' => $this->zipcode,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'user_id' => $this->user_id,
             'is_deleted' => $this->is_deleted,
         ]);
 
