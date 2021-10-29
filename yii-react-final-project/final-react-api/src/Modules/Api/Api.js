@@ -95,9 +95,7 @@ const Api = () => {
   };
 
   const deleteApiHandler = async (apiId) => {
-    const confirm = window.confirm(
-      "Are you sure you wish to delete this user?"
-    );
+    const confirm = window.confirm("Are you sure you wish to delete this api?");
     if (confirm === true) {
       const data = await deleteApi(apiId);
       loadApiData();
