@@ -9,11 +9,31 @@ import {
   addProject,
   projectSearch,
   editProject,
+  sort,
 } from "../../Shared/Services/Project-Services";
 import Pagination from "../../Shared/UI/Pagination/Pagination";
 import Add from "../../Shared/UI/Buttons/Add";
+import SortList from "../../Shared/UI/SortList/SortList";
 
 const Project = () => {
+    const sortType = [
+        {
+            value:"title ASC",
+            text:"Title Ascending"
+        },
+        {
+            value:"title DESC",
+            text:"Title Descending"
+        },
+        {
+            value:"description ASC",
+            text:"Description Ascending"
+        },
+        {
+            value:"description DESC",
+            text:"Description Decending"
+        }
+    ];
   // Set State for Project Data
   const [projectData, setProjectData] = useState([]);
   const [buttonPopup, setButtonPopup] = useState(false);
@@ -32,12 +52,13 @@ const Project = () => {
   });
 
   // Set State for Sort Project Variable
-  const [sortStatus, setSortStatus] = useState(true);
+  const [sortStatus, setSortStatus] = useState('');
 
   //Load Project Data
   useEffect(() => {
     loadProjectData();
   }, []);
+
   const loadProjectData = async () => {
     const res = await getProjectData();
     setProjectData(res.data.items);
@@ -53,19 +74,21 @@ const Project = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Sort Projects
-  const handleSort = () => {
-    const data = projectData;
-
-    if (sortStatus) {
-      let sorted = data.sort((a, b) => a.title.localeCompare(b.title));
-
-      setProjectData(sorted);
-      setSortStatus(!sortStatus);
-    } else {
-      let sorted = data.sort((a, b) => b.title.localeCompare(a.title));
-
-      setProjectData(sorted);
-      setSortStatus(!sortStatus);
+  const handleSort = async(event) => {
+    const sortBy = event.target.value;
+    if (sortBy == "title ASC") {
+      const res = await sort("title");  
+      setProjectData(res.data.items);
+    } else if(sortBy == "title DESC") {
+        const res = await sort("-title");  
+        setProjectData(res.data.items);
+    }
+    else if (sortBy == "description ASC") {
+        const res = await sort("description");  
+        setProjectData(res.data.items);
+    } else if(sortBy == "description DESC") {
+        const res = await sort("-description");  
+        setProjectData(res.data.items);
     }
   };
 
@@ -113,15 +136,6 @@ const Project = () => {
   return (
     <div className="container">
       <h1 className="text-center"> Add New Projects</h1>
-
-      <button
-        type="button"
-        className="btn btn-warning"
-        style={{ color: "white" }}
-        onClick={handleSort}
-      >
-        Sort By Title
-      </button>
       <Input
         label="Search"
         input={{
@@ -133,6 +147,17 @@ const Project = () => {
         value={searchProjectTitle}
         onChange={searchProjectTitleHandler}
       ></Input>
+      <div className="form-group mt-5">
+          <b><label>Sort By</label></b>
+          <select className="form-control" onChange={handleSort} name="sortList">
+            <option>Select Sort By</option>
+            {
+              sortType.map((currentValue, index)=>{
+                return(<SortList key={index} value={currentValue.value}>{currentValue.text}</SortList>);
+              })
+            }
+        </select>
+      </div>
       <Add
         other={{
           onClick: () => {

@@ -34,6 +34,7 @@ const ModuleForm = (props) => {
     }
     const projectVal = (event) =>{
         setProjectId(event.target.value);
+        console.log(projectId);
     }
     const moduleTitleHandler = (event) =>{
         setModuleTitle(event.target.value);

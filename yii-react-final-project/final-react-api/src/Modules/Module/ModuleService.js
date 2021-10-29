@@ -19,13 +19,6 @@ const ModuleService = (props) => {
                                 )
                             })
                 }
-                {/* <PopupModal
-                    trigger={buttonPopup}
-                    settrigger={setButtonPopup}
-                    title = "Add Module"
-                >
-                    <ModuleForm></ModuleForm>
-                </PopupModal>                             */}
             </tbody>
         )
     }
